@@ -10,20 +10,6 @@
 #include "Item.h"
 
 namespace InventoryNS {
-    class InventoryIterator {
-    private:
-        std::vector<std::unique_ptr<ItemNS::Item>>::iterator Iterator_;
-    public:
-        explicit InventoryIterator(){}
-        explicit InventoryIterator(std::vector<std::unique_ptr<ItemNS::Item>>::iterator it);
-
-        bool operator==(const InventoryIterator &rhs) const;
-
-        bool operator!=(const InventoryIterator &rhs) const;
-
-        & operator *();
-        * operator ->();
-    };
 
     class Inventory {
     public:
@@ -31,7 +17,7 @@ namespace InventoryNS {
 
         Inventory &operator=(const Inventory &);
 
-        friend class InventoryIterator;
+        typedef std::vector<std::unique_ptr<ItemNS::Item>>::iterator InventoryIterator;
 
         InventoryIterator find(const std::string &title);
 
@@ -45,9 +31,12 @@ namespace InventoryNS {
 
         InventoryIterator end() const;
 
-        int getSize() const;
+        int getCurWeight() const;
+
+        [[nodiscard]] int getSize() const;
 
     private:
+        int curWeight;
         std::vector<std::unique_ptr<ItemNS::Item>> Elements_;
     };
 

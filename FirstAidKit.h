@@ -21,6 +21,8 @@ namespace FirstAidKitNS {
 
         void setHeatPointBoost(int heatPointBoost);
 
+        ItemNS::ItemType GetType() const override;
+
     private:
         int UsageTime_;
         int HeatPointBoost_;

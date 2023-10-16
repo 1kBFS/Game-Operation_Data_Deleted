@@ -12,6 +12,7 @@ namespace WeaponNS {
 
     class Weapon : public ItemNS::Item {
     public:
+
         Weapon(const std::string &title, int weight, int damage, int shotTime, int reloadTime, int magazineSize,
                int magazineCapacity, int roundType);
 
@@ -26,6 +27,8 @@ namespace WeaponNS {
         int getShotTime() const;
 
         int getReloadTime() const;
+
+        ItemNS::ItemType GetType() const override;
 
     private:
         int Damage_;

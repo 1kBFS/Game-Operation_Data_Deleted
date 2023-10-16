@@ -9,15 +9,11 @@ namespace InventoryNS {
 
     }
 
-    InventoryIterator::InventoryIterator(std::vector<std::unique_ptr<ItemNS::Item>>::iterator it) {
-
+    int Inventory::getSize() const {
+        return static_cast<int>(Elements_.size());
     }
 
-    bool InventoryIterator::operator==(const InventoryIterator &rhs) const {
-        return Iterator_ == rhs.Iterator_;
-    }
-
-    bool InventoryIterator::operator!=(const InventoryIterator &rhs) const {
-        return !(rhs == *this);
+    int Inventory::getCurWeight() const {
+        return curWeight;
     }
 } // InventoryNS

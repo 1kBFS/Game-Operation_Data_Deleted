@@ -28,4 +28,8 @@ namespace FirstAidKitNS {
     void FirstAidKit::setHeatPointBoost(int heatPointBoost) {
         HeatPointBoost_ = heatPointBoost;
     }
+
+    ItemNS::ItemType FirstAidKit::GetType() const {
+        return ItemNS::AID_KIT;
+    }
 } // FirstAidKitNS

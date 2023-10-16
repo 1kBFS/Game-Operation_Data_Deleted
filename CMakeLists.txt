@@ -3,4 +3,4 @@ project(Lab3)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(Lab3 main.cpp Item.cpp Item.h Weapon.cpp Weapon.h RoundContainer.cpp RoundContainer.h FirstAidKit.cpp FirstAidKit.h Inventory.cpp Inventory.h)
+add_executable(Lab3 main.cpp Item.cpp Item.h Weapon.cpp Weapon.h RoundContainer.cpp RoundContainer.h FirstAidKit.cpp FirstAidKit.h Inventory.cpp Inventory.h Entity.cpp Entity.h Matrix.cpp Matrix.h Level.cpp Level.h Team.cpp Team.h Cell.cpp Cell.h)

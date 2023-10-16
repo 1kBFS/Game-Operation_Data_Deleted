@@ -10,5 +10,4 @@ namespace ItemNS {
         Weight_ = weight;
     }
 
-}
 } // ItemNS

@@ -24,6 +24,9 @@ namespace RoundNS {
         void setSize(int size);
 
         void extract(int amount);
+
+        ItemNS::ItemType GetType() const override;
+
     private:
         int RoundType_;
         int Capacity_;

@@ -26,4 +26,8 @@ namespace WeaponNS {
     int Weapon::getMagazineSize() const {
         return MagazineSize_;
     }
+
+    ItemNS::ItemType Weapon::GetType() const {
+        return ItemNS::WEAPON;
+    }
 } // WeaponNS

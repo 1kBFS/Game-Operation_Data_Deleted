@@ -11,6 +11,10 @@
 
 namespace ItemNS {
 
+    enum ItemType {
+        WEAPON, AID_KIT, CONTAINER
+    };
+
     class Item {
     public:
         Item(std::string title, int weight);
@@ -19,10 +23,15 @@ namespace ItemNS {
             return Title_;
         }
 
+        [[nodiscard]] virtual ItemType GetType() const = 0;
+
+        virtual ~Item() = default;
+
     private:
         std::string Title_;
         int Weight_;
     };
+
 
 } // ItemNS
 

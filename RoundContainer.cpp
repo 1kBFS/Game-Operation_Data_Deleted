@@ -31,4 +31,8 @@ namespace RoundNS {
     void RoundContainer::setSize(int size) {
         Size_ = size;
     }
+
+    ItemNS::ItemType RoundContainer::GetType() const {
+        return ItemNS::CONTAINER;
+    }
 } // RoundNS
