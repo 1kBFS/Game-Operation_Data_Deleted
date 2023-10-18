@@ -8,9 +8,6 @@
 #include <string>
 #include <vector>
 #include <memory>
-#include "Cell.h"
-#include "Matrix.h"
-
 // TODO: описать производные классы
 namespace EntityNS {
 
@@ -25,11 +22,11 @@ namespace EntityNS {
 
         virtual EntityType getType() const = 0;
 
-        virtual void move() = 0;
+        virtual void move(int new_i, int new_j) = 0;
 
         virtual void die() = 0;
 
-        std::vector<std::unique_ptr<Entity>> find_enemy();
+        // Тут наверное shared_ptr
 
         const std::string &getName() const;
 
@@ -64,7 +61,7 @@ namespace EntityNS {
     private:
         // TODO: добавить указатель на Team
         int i, j;
-        std::shared_ptr<Matrix<CellNS::Cell>> Board_;
+        // std::shared_ptr<Matrix<CellNS::Cell>> Board_;
         std::string Name_;
         int maxHeatPoint_;
         int curHeatPoint_;

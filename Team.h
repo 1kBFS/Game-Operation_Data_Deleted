@@ -10,7 +10,6 @@ namespace TeamNS {
     class Team {
     private:
         std::vector<std::shared_ptr<EntityNS::Entity>> Entities_;
-        int a;
     };
 
 } // TeamNS

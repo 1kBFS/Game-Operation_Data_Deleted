@@ -10,6 +10,7 @@
 #include "Team.h"
 #include "Matrix.h"
 #include "Cell.h"
+#include "Entity.h"
 
 namespace LevelNS {
 
@@ -22,8 +23,12 @@ namespace LevelNS {
         // 5. Resize, Getters
         // 6. Итератор по инвентарям команд
         // 7. Check if two creatures in one team
+
+        // Тут, наверное, shared_ptr?
+        std::vector<std::shared_ptr<EntityNS::Entity>> find_enemy(TeamNS::Team& my_team);
+
     private:
-        std::vector<TeamNS::Team> Teams_;
+        std::vector<std::shared_ptr<TeamNS::Team>> Teams_;
         std::shared_ptr<Matrix<CellNS::Cell>> Board_;
     };
 

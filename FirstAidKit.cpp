@@ -12,7 +12,6 @@ namespace FirstAidKitNS {
                                                                                                                 usageTime),
                                                                                                         HeatPointBoost_(
                                                                                                                 heatPointBoost) {}
-
     int FirstAidKit::getUsageTime() const {
         return UsageTime_;
     }
