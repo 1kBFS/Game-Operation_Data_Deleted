@@ -30,4 +30,28 @@ namespace WeaponNS {
     ItemNS::ItemType Weapon::GetType() const {
         return ItemNS::WEAPON;
     }
+
+    void Weapon::setDamage(int damage) {
+        Damage_ = damage;
+    }
+
+    void Weapon::setShotTime(int shotTime) {
+        ShotTime_ = shotTime;
+    }
+
+    void Weapon::setReloadTime(int reloadTime) {
+        ReloadTime_ = reloadTime;
+    }
+
+    void Weapon::setMagazineSize(int magazineSize) {
+        MagazineSize_ = magazineSize;
+    }
+
+    void Weapon::setMagazineCapacity(int magazineCapacity) {
+        MagazineCapacity_ = magazineCapacity;
+    }
+
+    void Weapon::setRoundType(int roundType) {
+        RoundType_ = roundType;
+    }
 } // WeaponNS

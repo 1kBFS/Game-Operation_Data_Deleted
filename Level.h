@@ -15,21 +15,24 @@
 namespace LevelNS {
 
     class Level {
-        //TODO:
-        // 1. Функции из задания
-        // 2. Добавление юнитов в команду
-        // 3. Добавление юнтиов на поле
-        // 4. Добавление предметов на поле
-        // 5. Resize, Getters
+        //TODO
         // 6. Итератор по инвентарям команд
-        // 7. Check if two creatures in one team
+        void place_unit(std::pair<int, int> pos, std::unique_ptr<EntityNS::Entity>);
+        void move_unit(std::pair<int, int> pos, std::unique_ptr<EntityNS::Entity>);
+        void remove_unit(std::pair<int, int> pos, int index);
+        void place_item(std::pair<int, int> pos, std::unique_ptr<ItemNS::Item>);
+        void remove_item(std::pair<int, int> pos, int index);
+
+        void setCellType(std::pair<int, int> pos, CellType type);
+        void resize(int new_x, int new_y);
 
         // Тут, наверное, shared_ptr?
         std::vector<std::shared_ptr<EntityNS::Entity>> find_enemy(TeamNS::Team& my_team);
-
+        std::vector<std::pair<int, int>> find_container();
+        friend class Cell;
     private:
         std::vector<std::shared_ptr<TeamNS::Team>> Teams_;
-        std::shared_ptr<Matrix<CellNS::Cell>> Board_;
+        std::shared_ptr<Matrix<Cell>> Board_;
     };
 
 } // LevelNS

@@ -6,19 +6,23 @@
 #define LAB3_CELL_H
 #include "Inventory.h"
 #include "Entity.h"
-namespace CellNS {
-
+namespace LevelNS {
+    enum CellType{FLOOR, WALL, WINDOW, BARRIER, CONTAINER};
     class Cell {
     public:
         //TODO:
-        // 1. Определить производные классы
-        // 2. Virtual destructor
-        // 3. Метод: добавить предмет
-        // 4. Удалить предмет
-        // 5. Список предметов - инвентарь
+        void place_item_ground(std::unique_ptr<ItemNS::Item>);
+        void place_item_container(std::unique_ptr<ItemNS::Item>);
+        void remove_item_ground(int index);
+        void remove_item_container(int index);
+
+        void place_unit(std::unique_ptr<EntityNS::Entity>);
+        void remove_unit(int index);
         virtual ~Cell() = default;
     private:
+        CellType Type_;
         InventoryNS::Inventory ItemsGround_;
+        InventoryNS::Inventory ItemsContainer_;
         std::vector<std::shared_ptr<EntityNS::Entity>> Entities_;
     };
 

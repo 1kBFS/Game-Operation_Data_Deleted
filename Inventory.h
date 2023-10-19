@@ -13,11 +13,12 @@ namespace InventoryNS {
 
     class Inventory {
     public:
+        typedef std::vector<std::unique_ptr<ItemNS::Item>>::iterator InventoryIterator;
+
         Inventory(const Inventory &);
 
         Inventory &operator=(const Inventory &);
 
-        typedef std::vector<std::unique_ptr<ItemNS::Item>>::iterator InventoryIterator;
 
         InventoryIterator find(const std::string &title);
 

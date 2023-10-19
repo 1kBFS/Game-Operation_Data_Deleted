@@ -11,6 +11,7 @@
 #include "Entity.h"
 #include "Inventory.h"
 #include "Weapon.h"
+namespace EntityNS{
 
 class Operative : EntityNS::Entity {
 public:
@@ -22,13 +23,19 @@ public:
 
     void take_item(InventoryNS::Inventory &inventory, int index);
 
-    void throw_item(int index);
+    std::unique_ptr<ItemNS::Item> throw_item(int index);
 
     int getCurrentWeight();
 
-    void reload();
+    void reload(const RoundNS::RoundContainer &container);
 
     void shot(EntityNS::Entity &enemy);
+
+    EntityType getType() const override;
+
+    void move(int new_i, int new_j) override;
+
+    std::optional<InventoryNS::Inventory> die() override;
 
     int getReloadTime() const;
 
@@ -42,13 +49,14 @@ public:
 
     void setAccuracy(int accuracy);
 
-    const InventoryNS::Inventory &getInvetnory() const;
+//    const InventoryNS::Inventory &getInvetnory() const;
 
     void setInvetnory(const InventoryNS::Inventory &invetnory);
 
-    const std::optional<WeaponNS::Weapon> &getActiveWeapon() const;
+    [[nodiscard]] const std::optional<WeaponNS::Weapon> &getActiveWeapon() const;
 
     void setActiveWeapon(const std::optional<WeaponNS::Weapon> &activeWeapon);
+
 
 private:
 
@@ -58,6 +66,6 @@ private:
     InventoryNS::Inventory Inventory_;
     std::optional<WeaponNS::Weapon> ActiveWeapon_;
 };
-
+}
 
 #endif //LAB3_OPERATIVE_H

@@ -8,7 +8,10 @@
 #include <string>
 #include <vector>
 #include <memory>
-// TODO: описать производные классы
+#include <optional>
+
+#include "Inventory.h"
+
 namespace EntityNS {
 
     enum EntityType {
@@ -24,7 +27,7 @@ namespace EntityNS {
 
         virtual void move(int new_i, int new_j) = 0;
 
-        virtual void die() = 0;
+        virtual  std::optional<InventoryNS::Inventory> die() = 0;
 
         // Тут наверное shared_ptr
 

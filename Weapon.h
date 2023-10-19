@@ -28,6 +28,18 @@ namespace WeaponNS {
 
         int getReloadTime() const;
 
+        void setDamage(int damage);
+
+        void setShotTime(int shotTime);
+
+        void setReloadTime(int reloadTime);
+
+        void setMagazineSize(int magazineSize);
+
+        void setMagazineCapacity(int magazineCapacity);
+
+        void setRoundType(int roundType);
+
         ItemNS::ItemType GetType() const override;
 
     private:
