@@ -19,7 +19,6 @@ namespace InventoryNS {
 
         Inventory &operator=(const Inventory &);
 
-
         InventoryIterator find(const std::string &title);
 
         InventoryIterator replace(InventoryIterator pos, const ItemNS::Item &new_item);
