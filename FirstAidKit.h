@@ -11,7 +11,7 @@ namespace FirstAidKitNS {
 
     class FirstAidKit : public ItemNS::Item {
     public:
-        FirstAidKit(const std::string &title, int weight, int usageTime, int heatPointBoost);
+        FirstAidKit(const std::string &title, int weight=1, int usageTime=1, int heatPointBoost=25);
 
         int getUsageTime() const;
 
