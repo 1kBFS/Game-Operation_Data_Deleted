@@ -9,7 +9,7 @@ namespace RoundNS {
 
     class RoundContainer: public ItemNS::Item {
     public:
-        RoundContainer(const std::string &title, int weight, int roundType, int capacity, int size);
+        explicit RoundContainer(const std::string &title="Standard Container", int weight=5, int roundType=0, int capacity=10, int size=10);
 
         int getRoundType() const;
 
@@ -23,9 +23,9 @@ namespace RoundNS {
 
         void setSize(int size);
 
-        void extract(int amount);
-R
-        ItemNS::ItemType GetType() const override;
+        int extract(int amount);
+
+        [[nodiscard]] ItemNS::ItemType GetType() const override;
 
     private:
         int RoundType_;

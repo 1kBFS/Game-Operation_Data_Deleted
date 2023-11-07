@@ -35,4 +35,13 @@ namespace RoundNS {
     ItemNS::ItemType RoundContainer::GetType() const {
         return ItemNS::CONTAINER;
     }
+
+    int RoundContainer::extract(int amount){
+        if (amount <= 0) {
+            throw std::invalid_argument("Unable to extract negative amount of bullets.");
+        }
+        int extracted_value = std::min(amount, Size_);
+        Size_-= extracted_value;
+        return extracted_value;
+    }
 } // RoundNS

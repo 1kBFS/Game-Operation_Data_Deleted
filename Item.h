@@ -19,7 +19,7 @@ namespace ItemNS {
     public:
         Item(std::string title, int weight);
 
-        const std::string &GetTitle() const {
+        [[nodiscard]] const std::string &GetTitle() const {
             return Title_;
         }
 
