@@ -9,7 +9,7 @@ namespace WeaponNS {
         return Damage_;
     }
 
-    Weapon::Weapon(const std::string &title, int roundType, int weight, int damage, int shotTime, int reloadTime, int magazineSize,
+    Weapon::Weapon(const std::string &title, int roundType, int weight, int magazineSize, int damage, int shotTime, int reloadTime,
                    int magazineCapacity) : Item(title, weight), Damage_(damage), ShotTime_(shotTime),
                                                               ReloadTime_(reloadTime), MagazineSize_(magazineSize),
                                                               MagazineCapacity_(magazineCapacity),

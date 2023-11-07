@@ -23,6 +23,8 @@ namespace ItemNS {
             return Title_;
         }
 
+        [[nodiscard]] int getWeight() const;
+
         [[nodiscard]] virtual ItemType GetType() const = 0;
 
         virtual ~Item() = default;

@@ -8,35 +8,43 @@
 #include <memory>
 #include <vector>
 #include "Item.h"
-
+// All Items are unique.
 namespace InventoryNS {
 
     class Inventory {
     public:
+        typedef std::vector<std::unique_ptr<ItemNS::Item>>::const_iterator const_InventoryIterator;
         typedef std::vector<std::unique_ptr<ItemNS::Item>>::iterator InventoryIterator;
+        Inventory() = default;
+        Inventory(const Inventory &) = delete;
+        Inventory &operator=(const Inventory &) = delete;
 
-        Inventory(const Inventory &);
-
-        Inventory &operator=(const Inventory &);
+        Inventory(Inventory &&) noexcept;
+        Inventory& operator=(Inventory &&inventory) noexcept;
 
         InventoryIterator find(const std::string &title);
 
-        InventoryIterator replace(InventoryIterator pos, const ItemNS::Item &new_item);
+        void erase(InventoryIterator pos);
 
-        InventoryIterator erase(InventoryIterator pos);
+        void push_back(std::unique_ptr<ItemNS::Item>&& new_item);
 
-        void push_back(const ItemNS::Item &new_item);
+        void put_all(Inventory& inventory);
 
-        InventoryIterator begin() const;
+        std::unique_ptr<ItemNS::Item> throw_item(InventoryIterator pos);
 
-        InventoryIterator end() const;
+        [[nodiscard]] const_InventoryIterator begin() const;
 
-        int getCurWeight() const;
+        [[nodiscard]] const_InventoryIterator end() const;
+
+        InventoryIterator begin();
+        InventoryIterator end();
+
+        [[nodiscard]] int getCurWeight() const;
 
         [[nodiscard]] int getSize() const;
 
     private:
-        int curWeight;
+        int curWeight = 0;
         std::vector<std::unique_ptr<ItemNS::Item>> Elements_;
     };
 

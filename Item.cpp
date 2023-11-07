@@ -10,4 +10,8 @@ namespace ItemNS {
         Weight_ = weight;
     }
 
+    int Item::getWeight() const {
+        return Weight_;
+    }
+
 } // ItemNS

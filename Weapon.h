@@ -13,7 +13,7 @@ namespace WeaponNS {
     class Weapon : public ItemNS::Item {
     public:
 
-        explicit Weapon(const std::string &title, int roundType, int weight=3, int damage=3, int shotTime=1, int reloadTime=5, int magazineSize=0,
+        explicit Weapon(const std::string &title, int roundType, int weight=3, int magazineSize=0, int damage=3, int shotTime=1, int reloadTime=5,
                int magazineCapacity=10);
 
         void reload(RoundNS::RoundContainer &container);
