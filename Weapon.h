@@ -13,20 +13,20 @@ namespace WeaponNS {
     class Weapon : public ItemNS::Item {
     public:
 
-        Weapon(const std::string &title, int weight, int damage, int shotTime, int reloadTime, int magazineSize,
-               int magazineCapacity, int roundType);
+        explicit Weapon(const std::string &title, int roundType, int weight=3, int damage=3, int shotTime=1, int reloadTime=5, int magazineSize=0,
+               int magazineCapacity=10);
 
-        void reload(const RoundNS::RoundContainer &container);
+        void reload(RoundNS::RoundContainer &container);
 
         int shot();
 
-        int getMagazineSize() const;
+        [[nodiscard]] int getMagazineSize() const;
 
-        int getDamage() const;
+        [[nodiscard]] int getDamage() const;
 
-        int getShotTime() const;
+        [[nodiscard]] int getShotTime() const;
 
-        int getReloadTime() const;
+        [[nodiscard]] int getReloadTime() const;
 
         void setDamage(int damage);
 
@@ -40,7 +40,7 @@ namespace WeaponNS {
 
         void setRoundType(int roundType);
 
-        ItemNS::ItemType GetType() const override;
+        [[nodiscard]] ItemNS::ItemType GetType() const override;
 
     private:
         int Damage_;

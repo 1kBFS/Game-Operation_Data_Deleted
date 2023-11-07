@@ -9,8 +9,8 @@ namespace WeaponNS {
         return Damage_;
     }
 
-    Weapon::Weapon(const std::string &title, int weight, int damage, int shotTime, int reloadTime, int magazineSize,
-                   int magazineCapacity, int roundType) : Item(title, weight), Damage_(damage), ShotTime_(shotTime),
+    Weapon::Weapon(const std::string &title, int roundType, int weight, int damage, int shotTime, int reloadTime, int magazineSize,
+                   int magazineCapacity) : Item(title, weight), Damage_(damage), ShotTime_(shotTime),
                                                               ReloadTime_(reloadTime), MagazineSize_(magazineSize),
                                                               MagazineCapacity_(magazineCapacity),
                                                               RoundType_(roundType) {}
@@ -53,5 +53,20 @@ namespace WeaponNS {
 
     void Weapon::setRoundType(int roundType) {
         RoundType_ = roundType;
+    }
+
+    void Weapon::reload(RoundNS::RoundContainer &container) {
+        if (container.getRoundType() != RoundType_) {
+            throw std::runtime_error("Invalid container type. Rounds are different.");
+        }
+        MagazineSize_+=container.extract(MagazineCapacity_ - MagazineSize_);
+    }
+
+    int Weapon::shot() {
+        if (MagazineSize_ <= 0) {
+            throw std::runtime_error("Weapon magazine is empty");
+        }
+        MagazineSize_-=1;
+        return Damage_;
     }
 } // WeaponNS

@@ -9,13 +9,13 @@ namespace RoundNS {
 
     class RoundContainer: public ItemNS::Item {
     public:
-        explicit RoundContainer(const std::string &title="Standard Container", int weight=5, int roundType=0, int capacity=10, int size=10);
+        explicit RoundContainer(const std::string &title, int roundType, int size=10, int weight=5, int capacity=10);
 
-        int getRoundType() const;
+        [[nodiscard]] int getRoundType() const;
 
-        int getCapacity() const;
+        [[nodiscard]] int getCapacity() const;
 
-        int getSize() const;
+        [[nodiscard]] int getSize() const;
 
         void setRoundType(int roundType);
 

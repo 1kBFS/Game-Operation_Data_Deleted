@@ -5,7 +5,7 @@
 #include "RoundContainer.h"
 
 namespace RoundNS {
-    RoundContainer::RoundContainer(const std::string &title, int weight, int roundType, int capacity, int size) : Item(
+    RoundContainer::RoundContainer(const std::string &title, int roundType, int size, int weight, int capacity) : Item(
             title, weight), RoundType_(roundType), Capacity_(capacity), Size_(size) {}
 
     int RoundContainer::getRoundType() const {
@@ -38,7 +38,10 @@ namespace RoundNS {
 
     int RoundContainer::extract(int amount){
         if (amount <= 0) {
-            throw std::invalid_argument("Unable to extract negative amount of bullets.");
+            throw std::invalid_argument("Unable to extract negative amount of bullets.(Maybe, your weapon is already reloaded?)");
+        }
+        if (Size_ <= 0) {
+            throw std::runtime_error("Container is empty.");
         }
         int extracted_value = std::min(amount, Size_);
         Size_-= extracted_value;
