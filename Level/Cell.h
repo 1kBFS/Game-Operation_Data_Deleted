@@ -4,8 +4,8 @@
 
 #ifndef LAB3_CELL_H
 #define LAB3_CELL_H
-#include "Inventory.h"
-#include "Entity.h"
+#include "../Items/Inventory.h"
+#include "../Entities/Entity.h"
 namespace LevelNS {
     enum CellType{FLOOR, WALL, WINDOW, BARRIER, CONTAINER};
     class Cell {

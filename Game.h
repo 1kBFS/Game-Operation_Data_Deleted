@@ -4,8 +4,8 @@
 
 #ifndef LAB3_GAME_H
 #define LAB3_GAME_H
-#include "Team.h"
-#include "Level.h"
+#include "Level/Team.h"
+#include "Level/Level.h"
 namespace GameNS {
 
     class Game {

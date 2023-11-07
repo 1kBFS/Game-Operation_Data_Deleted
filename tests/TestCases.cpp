@@ -2,10 +2,10 @@
 // Created by Pavel on 06.11.2023.
 //
 #define CATCH_CONFIG_MAIN
-#include "../RoundContainer.h"
-#include "../FirstAidKit.h"
-#include "../Weapon.h"
-#include "../Inventory.h"
+#include "../Items/RoundContainer.h"
+#include "../Items/FirstAidKit.h"
+#include "../Items/Weapon.h"
+#include "../Items/Inventory.h"
 #include "catch.hpp"
 
 TEST_CASE("RoundContainer"){

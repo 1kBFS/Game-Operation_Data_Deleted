@@ -10,7 +10,7 @@
 #include <memory>
 #include <optional>
 
-#include "Inventory.h"
+#include "../Items/Inventory.h"
 
 namespace EntityNS {
 
@@ -23,48 +23,45 @@ namespace EntityNS {
         Entity(const std::string &name, int maxHeatPoint, int curHeatPoint, int curTime, int avaliableTime,
                int stepTime, int visibilityRadius);
 
-        virtual EntityType getType() const = 0;
+        [[nodiscard]] virtual EntityType getType() const = 0;
 
         virtual void move(int new_i, int new_j) = 0;
 
         virtual  std::optional<InventoryNS::Inventory> die() = 0;
 
-        // Тут наверное shared_ptr
-
-        const std::string &getName() const;
+        [[nodiscard]] const std::string &getName() const;
 
         void setName(const std::string &name);
 
-        int getMaxHeatPoint() const;
+        [[nodiscard]] int getMaxHeatPoint() const;
 
         void setMaxHeatPoint(int maxHeatPoint);
 
-        int getCurHeatPoint() const;
+        [[nodiscard]] int getCurHeatPoint() const;
 
         void setCurHeatPoint(int curHeatPoint);
 
-        int getCurTime() const;
+        [[nodiscard]] int getCurTime() const;
 
         void setCurTime(int curTime);
 
-        int getAvaliableTime() const;
+        [[nodiscard]] int getAvaliableTime() const;
 
         void setAvaliableTime(int avaliableTime);
 
-        int getStepTime() const;
+        [[nodiscard]] int getStepTime() const;
 
         void setStepTime(int stepTime);
 
-        int getVisibilityRadius() const;
+        [[nodiscard]] int getVisibilityRadius() const;
 
         void setVisibilityRadius(int visibilityRadius);
 
         virtual ~Entity()= default;
 
     private:
-        // TODO: добавить указатель на Team
+
         int i, j;
-        // std::shared_ptr<Matrix<CellNS::Cell>> Board_;
         std::string Name_;
         int maxHeatPoint_;
         int curHeatPoint_;

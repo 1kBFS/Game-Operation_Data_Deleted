@@ -8,9 +8,9 @@
 #include <vector>
 #include <memory>
 #include "Team.h"
-#include "Matrix.h"
+#include "../Game/Matrix.h"
 #include "Cell.h"
-#include "Entity.h"
+#include "../Entities/Entity.h"
 
 namespace LevelNS {
 

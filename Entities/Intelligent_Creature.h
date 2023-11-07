@@ -5,7 +5,7 @@
 #ifndef LAB3_INTELLIGENT_CREATURE_H
 #define LAB3_INTELLIGENT_CREATURE_H
 #include "Entity.h"
-#include "Weapon.h"
+#include "../Items/Weapon.h"
 namespace EntityNS {
 
     class IntelligentCreature:Entity {

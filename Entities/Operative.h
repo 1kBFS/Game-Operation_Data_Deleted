@@ -9,8 +9,8 @@
 #include <optional>
 
 #include "Entity.h"
-#include "Inventory.h"
-#include "Weapon.h"
+#include "../Items/Inventory.h"
+#include "../Items/Weapon.h"
 namespace EntityNS{
 
 class Operative : EntityNS::Entity {

@@ -5,8 +5,8 @@
 #ifndef LAB3_TEAM_H
 #define LAB3_TEAM_H
 
-#include "Entity.h"
-#include "Inventory.h"
+#include "../Entities/Entity.h"
+#include "../Items/Inventory.h"
 
 namespace TeamNS {
     template<typename T>
