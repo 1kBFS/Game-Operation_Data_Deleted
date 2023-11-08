@@ -7,11 +7,16 @@
 #include "Entity.h"
 namespace EntityNS {
     class Forager:Entity {
+        void drop_all(InventoryNS::Inventory &inventory);
+
+        // index in unit inventory
+        void drop_into(InventoryNS::Inventory &inventory, int index);
+
         void take_item(InventoryNS::Inventory &inventory, int index);
 
         std::unique_ptr<ItemNS::Item> throw_item(int index);
 
-        EntityType getType() const override;
+        [[nodiscard]] EntityType getType() const override;
 
         void move(int new_i, int new_j) override;
 
