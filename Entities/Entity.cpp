@@ -67,8 +67,16 @@ namespace EntityNS {
         VisibilityRadius_ = visibilityRadius;
     }
 
-    std::vector<std::unique_ptr<Entity>> Entity::find_enemy() {
-
-        return std::vector<std::unique_ptr<Entity>>();
+    void Entity::reset_time(){
+        curTime_ = AvaliableTime_;
     }
+
+    void Entity::decrease_hp(int amount) {
+        curHeatPoint_ = std::max(curHeatPoint_-amount, 0);
+    }
+
+    std::pair<int, int> Entity::getPos() const {
+        return {i, j};
+    }
+
 } // EntityNS

@@ -8,22 +8,27 @@
 #include "../Items/Weapon.h"
 namespace EntityNS {
 
-    class IntelligentCreature:Entity {
-        EntityType getType() const override;
+    class IntelligentCreature: public Entity {
+    public:
+        explicit IntelligentCreature(const std::string &name, int accuracy=75);
+
+        [[nodiscard]] EntityType getType() const override;
 
         void move(int new_i, int new_j) override;
 
         std::optional<InventoryNS::Inventory> die() override;
 
-        void shot(EntityNS::Entity &enemy);
+        bool shot(EntityNS::Entity &enemy);
 
-        std::unique_ptr<ItemNS::Item> throw_item(int index);
+        std::unique_ptr<ItemNS::Item> throw_weapon();
+
+        void put_weapon(std::unique_ptr<WeaponNS::Weapon>&& new_item);
 
         void take_item(InventoryNS::Inventory &inventory, int index);
 
     private:
         int Accuracy_;
-        std::optional<WeaponNS::Weapon> ActiveWeapon_;
+        std::unique_ptr<WeaponNS::Weapon> ActiveWeapon_;
     };
 
 } // EntityNS

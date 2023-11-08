@@ -6,6 +6,7 @@
 #define LAB3_ENTITY_H
 
 #include <string>
+#include <utility>
 #include <vector>
 #include <memory>
 #include <optional>
@@ -22,6 +23,8 @@ namespace EntityNS {
     public:
         Entity(const std::string &name, int maxHeatPoint, int curHeatPoint, int curTime, int avaliableTime,
                int stepTime, int visibilityRadius);
+
+        explicit Entity(std::string name) : Name_(std::move(name)) {}
 
         [[nodiscard]] virtual EntityType getType() const = 0;
 
@@ -57,18 +60,22 @@ namespace EntityNS {
 
         void setVisibilityRadius(int visibilityRadius);
 
+        std::pair<int, int> getPos() const;
+        void reset_time();
+
+        void decrease_hp(int amount);
         virtual ~Entity()= default;
 
-    private:
+    protected:
 
-        int i, j;
+        int i = 0, j = 0;
         std::string Name_;
-        int maxHeatPoint_;
-        int curHeatPoint_;
-        int curTime_;
-        int AvaliableTime_;
-        int StepTime_;
-        int VisibilityRadius_;
+        int maxHeatPoint_ = 100;
+        int curTime_ = 0;
+        int AvaliableTime_ = 0;
+        int StepTime_ = 1;
+        int VisibilityRadius_ = 5;
+        int curHeatPoint_ = 100;
     };
 
 
