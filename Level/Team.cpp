@@ -4,10 +4,40 @@
 
 #include "Team.h"
 
+#include <utility>
+
 namespace TeamNS {
 
-    TeamInventoryIterator::TeamInventoryIterator(std::vector<std::unique_ptr<ItemNS::Item>>::iterator,
-                                                 std::vector<std::shared_ptr<EntityNS::Entity>>::iterator) {
 
+    int Team::getSize() const {
+        return static_cast<int>(Entities_.size());
     }
+
+    Team::TeamIterator Team::begin() {
+        return Entities_.begin();
+    }
+
+    Team::TeamIterator Team::end() {
+        return Entities_.end();
+    }
+
+    Team::const_TeamIterator Team::begin() const {
+        return Entities_.begin();
+    }
+
+    Team::const_TeamIterator Team::end() const {
+        return Entities_.end();
+    }
+
+    void Team::push_back(std::shared_ptr<EntityNS::Entity> &&new_entity) {
+        Entities_.push_back(new_entity);
+    }
+
+    void Team::remove_unit(TeamIterator pos) {
+        Entities_.erase(pos);
+    }
+
+    Team::Team(std::string title) : Title_(std::move(title)) {}
+
+
 } // TeamNS

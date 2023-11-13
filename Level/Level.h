@@ -15,8 +15,6 @@
 namespace LevelNS {
 
     class Level {
-        //TODO
-        // 6. Итератор по инвентарям команд
         void place_unit(std::pair<int, int> pos, std::unique_ptr<EntityNS::Entity>);
         void move_unit(std::pair<int, int> pos, std::unique_ptr<EntityNS::Entity>);
         void remove_unit(std::pair<int, int> pos, int index);
