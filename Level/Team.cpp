@@ -29,7 +29,7 @@ namespace TeamNS {
         return Entities_.end();
     }
 
-    void Team::push_back(std::shared_ptr<EntityNS::Entity> &&new_entity) {
+    void Team::push_back(std::shared_ptr<EntityNS::Entity>& new_entity) {
         Entities_.push_back(new_entity);
     }
 

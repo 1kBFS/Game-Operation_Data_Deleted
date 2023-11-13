@@ -18,7 +18,7 @@ namespace TeamNS {
         typedef std::vector<std::shared_ptr<EntityNS::Entity>>::const_iterator const_TeamIterator;
 
         void remove_unit(TeamIterator pos);
-        void push_back(std::shared_ptr<EntityNS::Entity>&& new_entity);
+        void push_back(std::shared_ptr<EntityNS::Entity>& new_entity);
         [[nodiscard]] int getSize() const;
 
         TeamIterator begin();
