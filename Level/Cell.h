@@ -37,6 +37,11 @@ namespace LevelNS {
 
         void setType(CellType type);
 
+        static bool isVisiable(const Cell & cell) {
+            return cell.Type_ == WINDOW || cell.Type_ == FLOOR;
+        }
+
+
     private:
         [[nodiscard]] bool can_be_placed() const;
         [[nodiscard]] static bool is_same_entities(const std::shared_ptr<EntityNS::Entity>&lhs, const std::shared_ptr<EntityNS::Entity>& rhs) ;

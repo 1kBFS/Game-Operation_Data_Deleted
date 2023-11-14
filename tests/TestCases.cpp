@@ -13,7 +13,17 @@
 
 #include "../Level/Level.h"
 #include "catch.hpp"
-
+template <typename T>
+bool compareVectors(std::vector<T> lhs, std::vector<T> rhs) {
+    if (lhs.size() != rhs.size()) return false;
+    for (size_t i = 0; i < lhs.size(); i++) {
+        if (lhs[i] != rhs[i]) {
+//            std::cout << lhs[i] << " Should == " << rhs[i] << std::endl;
+            return false;
+        }
+    }
+    return true;
+}
 TEST_CASE("RoundContainer"){
     RoundNS::RoundContainer container("AK-47 bullets", 0);
     REQUIRE(container.GetTitle() == "AK-47 bullets");
@@ -261,5 +271,15 @@ TEST_CASE("INTELLIGENT_CREATURE") {
 
 TEST_CASE("LEVEL") {
     LevelNS::Level level(3);
+    auto points = LevelNS::Level::getCellsOnLine({0, 0}, {2, 1});
+    for (auto &el : points) {
+        std::cout << el.first << " " << el.second << "\n";
+    }
+    REQUIRE(points[0] == std::make_pair(2, 1));
+    REQUIRE(points[0] == std::make_pair(0, 0));
+    REQUIRE(points[2] == std::make_pair(1, 0));
 
+    level.setCellType({1, 1}, LevelNS::WALL);
+    points = level.getVisibleCells({0, 0}, 2);
+    REQUIRE(compareVectors(points, {{0, 1}, {1, 0}}));
 }

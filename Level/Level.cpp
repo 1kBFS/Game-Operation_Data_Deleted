@@ -2,8 +2,9 @@
 // Created by Pavel on 15.10.2023.
 //
 
+#include <queue>
+#include <map>
 #include "Level.h"
-
 namespace LevelNS {
 
 
@@ -132,9 +133,79 @@ namespace LevelNS {
         }
     }
 
-    void Level::findVisiably(int i, int j, int radius, std::vector<std::pair<int, int>> &result) {
+    std::vector<std::pair<int, int>> Level::getCellsOnLine(std::pair<int, int> start_pos, std::pair<int, int> end_pos) {
+        std::vector<std::pair<int, int>> result;
+        int x1 = start_pos.first, y1 = start_pos.second;
+        int x2 = start_pos.first, y2 = start_pos.second;
+        const int deltaX = abs(x2 - x1);
+        const int deltaY = abs(y2 - y1);
+        const int signX = x1 < x2 ? 1 : -1;
+        const int signY = y1 < y2 ? 1 : -1;
+        int error = deltaX - deltaY;
+        result.emplace_back(x2, y2);
+        while(x1 != x2 || y1 != y2)
+        {
+            result.emplace_back(x1, y1);
+            int error2 = error * 2;
+            if(error2 > -deltaY)
+            {
+                error -= deltaY;
+                x1 += signX;
+            }
+            if(error2 < deltaX)
+            {
+                error += deltaX;
+                y1 += signY;
+            }
+        }
+        return result;
+    }
+
+    std::vector<std::pair<int, int>> Level::getVisibleCells(std::pair<int, int> start_pos, int radius) {
+        const int plusX[4] = {0, 0, 1, -1};
+        const int plusY[4] = {1, -1, 0, 0};
+        std::queue<std::pair<int, int>> q;
+        std::map<std::pair<int, int>, int> dist;
+        dist[start_pos] = 0;
+        q.push(start_pos);
+        std::vector<std::pair<int, int>> potential_cells, result;
+        while (!q.empty()){
+            auto v = q.front();
+            q.pop();
+            if (dist[v] > radius) {
+                break;
+            }
+            potential_cells.push_back(v);
+            for (int k = 0; k < 4; k++){
+                int x = v.first + plusX[k];
+                int y = v.second + plusY[k];
+                if (check_coords({x, y}) && !dist.contains({x, y})){
+                    dist[{x,y}] = dist[v]+1;
+                    q.push({x, y});
+                }
+            }
+        }
+
+        for (auto & cell : potential_cells){
+            auto cells_on_path = getCellsOnLine(start_pos, cell);
+            if (check_all(cells_on_path, Cell::isVisiable)){
+                result.push_back(cell);
+            }
+        }
+        return result;
 
     }
+
+    bool Level::check_all(std::vector<std::pair<int, int>> &cells, const std::function<bool(const Cell &)>& checker) {
+        for (auto& [i, j] : cells) {
+            if (!checker(Board_[i][j])){
+                return false;
+            }
+        }
+        return true;
+    }
+
+
 
 
 } // LevelNS
