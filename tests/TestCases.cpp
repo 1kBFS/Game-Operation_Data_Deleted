@@ -10,6 +10,8 @@
 #include "../Entities/Operative.h"
 #include "../Entities/Wild_Creature.h"
 #include "../Entities/Intelligent_Creature.h"
+
+#include "../Level/Level.h"
 #include "catch.hpp"
 
 TEST_CASE("RoundContainer"){
@@ -254,5 +256,10 @@ TEST_CASE("INTELLIGENT_CREATURE") {
     REQUIRE(items.getSize() == 1);
     auto &smrt_ptr = *items.begin();
     REQUIRE(&(*smrt_ptr) == ptr_addr);
+
+}
+
+TEST_CASE("LEVEL") {
+    LevelNS::Level level(3);
 
 }

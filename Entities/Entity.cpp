@@ -79,4 +79,10 @@ namespace EntityNS {
         return {i, j};
     }
 
+    void Entity::setPos(std::pair<int, int> pos) {
+        i = pos.first;
+        j = pos.second;
+    }
+
+
 } // EntityNS

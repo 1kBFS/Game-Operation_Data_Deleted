@@ -30,7 +30,7 @@ namespace EntityNS {
 
         virtual void move(int new_i, int new_j) = 0;
 
-        virtual  std::optional<InventoryNS::Inventory> die() = 0;
+        virtual std::optional<InventoryNS::Inventory> die() = 0;
 
         [[nodiscard]] const std::string &getName() const;
 
@@ -60,11 +60,15 @@ namespace EntityNS {
 
         void setVisibilityRadius(int visibilityRadius);
 
-        std::pair<int, int> getPos() const;
+        [[nodiscard]] std::pair<int, int> getPos() const;
+
+        void setPos(std::pair<int, int> pos);
+
         void reset_time();
 
         void decrease_hp(int amount);
-        virtual ~Entity()= default;
+
+        virtual ~Entity() = default;
 
     protected:
 

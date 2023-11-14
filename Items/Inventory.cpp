@@ -79,7 +79,13 @@ namespace InventoryNS {
         return ptr;
     }
 
-
+    std::vector<const ItemNS::Item *> Inventory::show_items() const {
+        std::vector<const ItemNS::Item *> result;
+        for (auto &el: Elements_) {
+            result.push_back(el.get());
+        }
+        return result;
+    }
 
 
 } // InventoryNS

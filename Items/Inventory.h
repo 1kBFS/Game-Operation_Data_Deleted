@@ -43,6 +43,8 @@ namespace InventoryNS {
 
         [[nodiscard]] int getSize() const;
 
+        [[nodiscard]] std::vector<const ItemNS::Item *> show_items() const;
+
     private:
         int curWeight = 0;
         std::vector<std::unique_ptr<ItemNS::Item>> Elements_;
