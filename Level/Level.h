@@ -46,7 +46,7 @@ namespace LevelNS {
         [[nodiscard]] std::vector<const ItemNS::Item *> show_items_container(std::pair<int, int> pos) const;
 
         void setCellType(std::pair<int, int> pos, CellType type);
-
+        CellType getCellType(std::pair<int, int> pos);
         std::vector<std::pair<int, int>> getVisibleCells(std::pair<int, int> start_pos, int radius);
 
         static std::vector<std::pair<int, int>>
@@ -62,8 +62,6 @@ namespace LevelNS {
     private:
 
         [[nodiscard]] bool check_coords(std::pair<int, int> pos) const;
-//TODO: перенести в  Game.h
-//        std::vector<TeamNS::Team> Teams_;
         std::vector<std::vector<Cell>> Board_;
     };
 

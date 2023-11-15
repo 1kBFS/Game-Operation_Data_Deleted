@@ -154,6 +154,10 @@ void EntityNS::Operative::put_item(std::unique_ptr<ItemNS::Item>&& new_item) {
     Inventory_.push_back(std::move(new_item));
 }
 
+ItemNS::Item *EntityNS::Operative::item_to_use(int index) {
+    return (Inventory_.find(index))->get();
+}
+
 
 
 

@@ -11,17 +11,17 @@ namespace FirstAidKitNS {
 
     class FirstAidKit : public ItemNS::Item {
     public:
-        FirstAidKit(const std::string &title, int weight=1, int usageTime=1, int heatPointBoost=25);
+        explicit FirstAidKit(const std::string &title, int weight=1, int usageTime=1, int heatPointBoost=25);
 
-        int getUsageTime() const;
+        [[nodiscard]] int getUsageTime() const;
 
         void setUsageTime(int usageTime);
 
-        int getHeatPointBoost() const;
+        [[nodiscard]] int getHeatPointBoost() const;
 
         void setHeatPointBoost(int heatPointBoost);
 
-        ItemNS::ItemType GetType() const override;
+        [[nodiscard]] ItemNS::ItemType GetType() const override;
 
     private:
         int UsageTime_;

@@ -220,9 +220,18 @@ namespace LevelNS {
 
     std::vector<std::pair<int, int>> Level::find_container() {
         std::vector<std::pair<int, int>> result;
-        for (size_t i = 0; i < Board_.size(); i++){
-            for (size_t i = 0; i < Board_[0].size(); i++) {}
+        for (size_t i = 0; i < Board_.size(); i++) {
+            for (size_t j = 0; j < Board_[0].size(); j++) {
+                if (Board_[i][j].getType() == CONTAINER) {
+                    result.emplace_back(i, j);
+                }
+            }
         }
+        return result;
+    }
+
+    CellType Level::getCellType(std::pair<int, int> pos) {
+        return Board_[pos.first][pos.second].getType();
     }
 
 

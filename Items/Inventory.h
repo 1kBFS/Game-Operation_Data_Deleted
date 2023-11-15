@@ -24,6 +24,7 @@ namespace InventoryNS {
 
         InventoryIterator find(const std::string &title);
 
+        InventoryIterator find(int index);
         void erase(InventoryIterator pos);
 
         void push_back(std::unique_ptr<ItemNS::Item>&& new_item);

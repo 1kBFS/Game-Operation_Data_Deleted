@@ -87,5 +87,15 @@ namespace InventoryNS {
         return result;
     }
 
+    Inventory::InventoryIterator Inventory::find(int index) {
+        int i = 0;
+        for (auto it = Elements_.begin(); it != Elements_.end(); it++, i++){
+            if (i == index){
+                return it;
+            }
+        }
+        return Elements_.end();
+    }
+
 
 } // InventoryNS
