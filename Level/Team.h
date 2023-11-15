@@ -19,6 +19,7 @@ namespace TeamNS {
 
         void remove_unit(TeamIterator pos);
         void push_back(std::shared_ptr<EntityNS::Entity>& new_entity);
+        TeamIterator find(std::shared_ptr<EntityNS::Entity>& entity_to_find);
         [[nodiscard]] int getSize() const;
 
         TeamIterator begin();

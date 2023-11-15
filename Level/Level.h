@@ -49,16 +49,21 @@ namespace LevelNS {
 
         std::vector<std::pair<int, int>> getVisibleCells(std::pair<int, int> start_pos, int radius);
 
-        static std::vector<std::pair<int, int>> getCellsOnLine(std::pair<int, int> start_pos, std::pair<int, int> end_pos);
-        bool check_all(std::vector<std::pair<int, int>>& cells, const std::function<bool(const Cell&)>& checker);
-//        std::vector<std::shared_ptr<EntityNS::Entity>> find_enemy(std::shared_ptr<EntityNS::Entity>& my_entity, TeamNS::Team& my_team);
-//        std::vector<std::pair<int, int>> find_container();
+        static std::vector<std::pair<int, int>>
+        getCellsOnLine(std::pair<int, int> start_pos, std::pair<int, int> end_pos);
+
+        bool check_all(std::vector<std::pair<int, int>> &cells, const std::function<bool(const Cell &)> &checker);
+
+        std::vector<std::shared_ptr<EntityNS::Entity>>
+        find_enemy(std::shared_ptr<EntityNS::Entity> &my_entity, TeamNS::Team &my_team,
+                   std::vector<std::pair<int, int>> &visiably_cells);
+        std::vector<std::pair<int, int>> find_container();
 
     private:
 
         [[nodiscard]] bool check_coords(std::pair<int, int> pos) const;
-
-        std::vector<TeamNS::Team> Teams_;
+//TODO: перенести в  Game.h
+//        std::vector<TeamNS::Team> Teams_;
         std::vector<std::vector<Cell>> Board_;
     };
 

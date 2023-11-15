@@ -2,6 +2,7 @@
 // Created by Pavel on 06.11.2023.
 //
 #define CATCH_CONFIG_MAIN
+
 #include "../Items/RoundContainer.h"
 #include "../Items/FirstAidKit.h"
 #include "../Items/Weapon.h"
@@ -13,7 +14,8 @@
 
 #include "../Level/Level.h"
 #include "catch.hpp"
-template <typename T>
+
+template<typename T>
 bool compareVectors(std::vector<T> lhs, std::vector<T> rhs) {
     if (lhs.size() != rhs.size()) return false;
     for (size_t i = 0; i < lhs.size(); i++) {
@@ -24,7 +26,8 @@ bool compareVectors(std::vector<T> lhs, std::vector<T> rhs) {
     }
     return true;
 }
-TEST_CASE("RoundContainer"){
+
+TEST_CASE("RoundContainer") {
     RoundNS::RoundContainer container("AK-47 bullets", 0);
     REQUIRE(container.GetTitle() == "AK-47 bullets");
     REQUIRE(container.GetType() == ItemNS::ItemType::CONTAINER);
@@ -70,13 +73,13 @@ TEST_CASE("Weapon") {
     REQUIRE_THROWS(weapon.reload(container_good));
 }
 
-TEST_CASE("Inventory"){
+TEST_CASE("Inventory") {
     InventoryNS::Inventory inventory1;
     inventory1.push_back(std::make_unique<RoundNS::RoundContainer>("AK-47 bullets", 1));
     REQUIRE(inventory1.getCurWeight() == 5);
     REQUIRE(inventory1.getSize() == 1);
     // Shows that compiles correct
-    for (auto &el : inventory1){
+    for (auto &el: inventory1) {
         auto local_container_name = el->GetTitle();
         if (el->GetType() == ItemNS::ItemType::CONTAINER) {
             auto local_container = dynamic_cast<RoundNS::RoundContainer *>(el.get());
@@ -99,7 +102,7 @@ TEST_CASE("Inventory"){
     inventory1.push_back(std::make_unique<FirstAidKitNS::FirstAidKit>("AID"));
 
     REQUIRE(inventory1.getSize() == 3);
-    REQUIRE(inventory1.getCurWeight() == (5+10+1));
+    REQUIRE(inventory1.getCurWeight() == (5 + 10 + 1));
 
     // Move ctor
     InventoryNS::Inventory inventory2 = std::move(inventory1);
@@ -189,7 +192,7 @@ TEST_CASE("OPERATIVE") {
     auto opt_inventory = operative_to_kill.die();
     REQUIRE(opt_inventory.has_value() == true);
     REQUIRE(opt_inventory->getSize() == 2);
-    auto& ptr = *(opt_inventory->begin());
+    auto &ptr = *(opt_inventory->begin());
     REQUIRE(ptr->GetTitle() == "TEST MEDICINE");
     REQUIRE(&(*ptr) == address);
 
@@ -225,7 +228,7 @@ TEST_CASE("INTELLIGENT_CREATURE") {
     // shot
     REQUIRE_THROWS(intelligentCreature.shot(enemy)); // no weapon is provided
     auto weapon_to_take = std::make_unique<WeaponNS::Weapon>("Ak-47", 1, 1, 1); // weapon with 1 bullet, 3 damage
-    auto weapon_to_takeAddr =&(*weapon_to_take);
+    auto weapon_to_takeAddr = &(*weapon_to_take);
     intelligentCreature.put_weapon(std::move(weapon_to_take));
     REQUIRE(intelligentCreature.shot(enemy) == true);
     REQUIRE(enemy.getCurHeatPoint() == 97);
@@ -272,14 +275,20 @@ TEST_CASE("INTELLIGENT_CREATURE") {
 TEST_CASE("LEVEL") {
     LevelNS::Level level(3);
     auto points = LevelNS::Level::getCellsOnLine({0, 0}, {2, 1});
-    for (auto &el : points) {
-        std::cout << el.first << " " << el.second << "\n";
-    }
-    REQUIRE(points[0] == std::make_pair(2, 1));
-    REQUIRE(points[0] == std::make_pair(0, 0));
-    REQUIRE(points[2] == std::make_pair(1, 0));
+    std::vector<std::pair<int, int>> answer = {{2, 1},
+                                               {0, 0},
+                                               {1, 0}};
+    sort(answer.begin(), answer.end());
+    sort(points.begin(), points.end());
+    REQUIRE(compareVectors(points, answer));
 
     level.setCellType({1, 1}, LevelNS::WALL);
-    points = level.getVisibleCells({0, 0}, 2);
-    REQUIRE(compareVectors(points, {{0, 1}, {1, 0}}));
+    points = level.getVisibleCells({0, 0}, 1);
+    answer = {{0, 1},
+              {1, 0},
+              {0, 0}};
+    sort(answer.begin(), answer.end());
+    sort(points.begin(), points.end());
+    REQUIRE(compareVectors(points, answer));
+
 }
