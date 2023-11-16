@@ -159,7 +159,7 @@ namespace LevelNS {
         return result;
     }
 
-    std::vector<std::pair<int, int>> Level::getVisibleCells(std::pair<int, int> start_pos, int radius) {
+    std::vector<std::pair<int, int>> Level::getVisibleCells(std::pair<int, int> start_pos, int radius) const{
         const int plusX[4] = {0, 0, 1, -1};
         const int plusY[4] = {1, -1, 0, 0};
         std::queue<std::pair<int, int>> q;
@@ -194,7 +194,7 @@ namespace LevelNS {
 
     }
 
-    bool Level::check_all(std::vector<std::pair<int, int>> &cells, const std::function<bool(const Cell &)> &checker) {
+    bool Level::check_all(std::vector<std::pair<int, int>> &cells, const std::function<bool(const Cell &)> &checker)  const{
         for (auto &[i, j]: cells) {
             if (!checker(Board_[i][j])) {
                 return false;

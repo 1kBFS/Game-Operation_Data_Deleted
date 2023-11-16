@@ -42,6 +42,7 @@ namespace GameNS {
         if (ActiveTeam_ == Teams_.end()) {
             ActiveTeam_ = Teams_.begin();
         }
+        reset_time();
     }
 
     void Game::move(std::pair<int, int> new_pos) {
@@ -73,7 +74,7 @@ namespace GameNS {
             auto ptr_intel = dynamic_cast<EntityNS::IntelligentCreature *>((*ActivePlayer_).get());
             ptr_intel->shot(*enemy);
         }
-        if (enemy->getCurHeatPoint() < 0) {
+        if (enemy->getCurHeatPoint() <= 0) {
             auto inventory = enemy->die();
             if (inventory.has_value()) {
                 CurrentLevel_.place_all_items_ground(enemy->getPos(), inventory.value());
@@ -219,7 +220,7 @@ namespace GameNS {
         return CurrentLevel_.find_enemy((*ActivePlayer_), (*ActiveTeam_), visiably_cells);
     }
 
-    std::vector<std::pair<int, int>> Game::update_visibility() {
+    std::vector<std::pair<int, int>> Game::update_visibility() const {
         return CurrentLevel_.getVisibleCells((*ActivePlayer_)->getPos(), (*ActivePlayer_)->getVisibilityRadius());
     }
 

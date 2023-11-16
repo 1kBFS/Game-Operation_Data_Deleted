@@ -20,7 +20,7 @@ namespace EntityNS {
 
         explicit Operative(const std::string &name, int maxHeatPoint = 100, int curHeatPoint = 100, int curTime = 100,
                            int avaliableTime = 100, int stepTime = 1,
-                           int visibilityRadius = 1, int reloadTime = 2, int maxWeight = 15, int accuracy = 100);
+                           int visibilityRadius = 3, int reloadTime = 2, int maxWeight = 15, int accuracy = 100);
 
         void change_weapon(int index);
 

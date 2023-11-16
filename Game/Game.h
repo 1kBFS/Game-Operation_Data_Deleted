@@ -11,6 +11,7 @@
 
 namespace GameNS {
     class Game {
+    public:
         Game(int size, std::vector<TeamNS::Team> &&teams);
 
         void reset_time();
@@ -51,7 +52,7 @@ namespace GameNS {
 
         std::vector<std::shared_ptr<EntityNS::Entity>> find_enemy(std::vector<std::pair<int, int>> &visiably_cells);
 
-        std::vector<std::pair<int, int>> update_visibility();
+        [[nodiscard]] std::vector<std::pair<int, int>> update_visibility() const;
 
         EntityNS::EntityType getPlayerType();
 

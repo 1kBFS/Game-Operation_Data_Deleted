@@ -55,3 +55,9 @@ void EntityNS::Forager::drop_all(InventoryNS::Inventory &inventory) {
     for (int i = 0; i < Inventory_.getSize(); i++)
         drop_into(inventory, i);
 }
+
+EntityNS::Forager::Forager(const std::string &name) : Entity(name) {}
+
+void EntityNS::Forager::setInvetnory(InventoryNS::Inventory &&invetnory) {
+    Inventory_ = std::move(invetnory);
+}

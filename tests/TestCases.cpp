@@ -11,9 +11,14 @@
 #include "../Entities/Operative.h"
 #include "../Entities/Wild_Creature.h"
 #include "../Entities/Intelligent_Creature.h"
+#include "../Entities/Forager.h"
 
+#include "../Game/Game.h"
+#include "../Level/Team.h"
 #include "../Level/Level.h"
+
 #include "catch.hpp"
+#include <memory>
 
 template<typename T>
 bool compareVectors(std::vector<T> lhs, std::vector<T> rhs) {
@@ -294,5 +299,52 @@ TEST_CASE("LEVEL") {
 
     auto ptr = level.get_inventory_container({0, 0});
     REQUIRE(ptr->getCurWeight() == 0);
+
+}
+
+TEST_CASE("GAME") {
+    // init items/unit - not game process
+    TeamNS::Team A("Operative");
+    TeamNS::Team B("Creatures");
+    auto operative_unit = std::make_shared<EntityNS::Operative>("default");
+    operative_unit->setAvaliableTime(10);
+    InventoryNS::Inventory loaded_inventory_unit;
+    loaded_inventory_unit.push_back(std::make_unique<WeaponNS::Weapon>("AK-47", 1, 1, 1));
+    operative_unit->setInvetnory(std::move(loaded_inventory_unit));
+    A.push_back(std::move(operative_unit));
+
+    auto creature_unit = std::make_shared<EntityNS::Forager>("default");
+    creature_unit->setCurHeatPoint(2);
+    creature_unit->setAvaliableTime(3);
+    creature_unit->setPos({1, 0});
+    InventoryNS::Inventory loaded_inventory_creature;
+    loaded_inventory_creature.push_back(std::make_unique<WeaponNS::Weapon>("MP4-A1", 1, 1, 1));
+    creature_unit->setInvetnory(std::move(loaded_inventory_creature));
+    B.push_back(std::move(creature_unit));
+    std::vector<TeamNS::Team> teams;
+    teams.push_back(std::move(A));
+    teams.push_back(std::move(B));
+
+    // Game process
+    GameNS::Game game(3, std::move(teams));
+    // game tick
+    auto visiably = game.update_visibility();
+    auto enemies = game.find_enemy(visiably);
+    game.change_weapon(0);
+    // game tick
+    visiably = game.update_visibility();
+    enemies = game.find_enemy(visiably);
+    auto it = enemies.begin();
+    game.shot((*it)->getPos(), (*it));
+    // game tick
+    visiably = game.update_visibility();
+    enemies = game.find_enemy(visiably);
+    game.move({1, 0});
+    // game tick
+    visiably = game.update_visibility();
+    enemies = game.find_enemy(visiably);
+    auto items = game.show_items_ground();
+    REQUIRE(items.size() == 1);
+    REQUIRE(items[0]->GetTitle() == "MP4-A1");
 
 }

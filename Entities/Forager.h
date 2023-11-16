@@ -6,8 +6,10 @@
 #define LAB3_FORAGER_H
 #include "Entity.h"
 namespace EntityNS {
-    class Forager:Entity {
+    class Forager: public Entity {
     public:
+        explicit Forager(const std::string &name);
+
         void drop_all(InventoryNS::Inventory &inventory);
 
         // index in unit inventory
@@ -23,6 +25,7 @@ namespace EntityNS {
 
         std::optional<InventoryNS::Inventory> die() override;
 
+        void setInvetnory(InventoryNS::Inventory &&invetnory);
     private:
         InventoryNS::Inventory Inventory_;
     };

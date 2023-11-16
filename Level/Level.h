@@ -53,12 +53,12 @@ namespace LevelNS {
 
         CellType getCellType(std::pair<int, int> pos);
 
-        std::vector<std::pair<int, int>> getVisibleCells(std::pair<int, int> start_pos, int radius);
+        std::vector<std::pair<int, int>> getVisibleCells(std::pair<int, int> start_pos, int radius) const;
 
         static std::vector<std::pair<int, int>>
         getCellsOnLine(std::pair<int, int> start_pos, std::pair<int, int> end_pos);
 
-        bool check_all(std::vector<std::pair<int, int>> &cells, const std::function<bool(const Cell &)> &checker);
+        bool check_all(std::vector<std::pair<int, int>> &cells, const std::function<bool(const Cell &)> &checker) const;
 
         std::vector<std::shared_ptr<EntityNS::Entity>>
         find_enemy(std::shared_ptr<EntityNS::Entity> &my_entity, TeamNS::Team &my_team,
