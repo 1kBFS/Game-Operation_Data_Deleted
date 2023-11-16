@@ -133,5 +133,121 @@ namespace GameNS {
         }
     }
 
+    void Game::take_item(int index, InventoryNS::Inventory *inventory) {
+        if ((*ActivePlayer_)->getType() != EntityNS::WILD_CREATURE) {
+            if ((*ActivePlayer_)->getType() == EntityNS::INTELLIGENT_CREATURE) {
+                auto ptr_wild = dynamic_cast<EntityNS::IntelligentCreature *>((*ActivePlayer_).get());
+                ptr_wild->take_item(*inventory, index);
+            } else if ((*ActivePlayer_)->getType() == EntityNS::OPERATIVE) {
+                auto ptr_oper = dynamic_cast<EntityNS::Operative *>((*ActivePlayer_).get());
+                ptr_oper->take_item(*inventory, index);
+            } else if ((*ActivePlayer_)->getType() == EntityNS::FORAGER) {
+                auto ptr_foo = dynamic_cast<EntityNS::Forager *>((*ActivePlayer_).get());
+                ptr_foo->take_item(*inventory, index);
+            }
+        } else {
+            throw std::invalid_argument("This type entity unable to take items.");
+        }
+    }
+
+    void Game::take_item_ground(int index) {
+        take_item(index, CurrentLevel_.get_inventory_ground((*ActivePlayer_)->getPos()));
+    }
+
+    void Game::take_item_container(int index) {
+        take_item(index, CurrentLevel_.get_inventory_container((*ActivePlayer_)->getPos()));
+    }
+
+    void Game::throw_item_ground(int index) {
+        throw_item(CurrentLevel_.get_inventory_ground((*ActivePlayer_)->getPos()), index);
+    }
+
+    void Game::throw_item(InventoryNS::Inventory *inventory, int index) {
+        std::unique_ptr<ItemNS::Item> item;
+        if ((*ActivePlayer_)->getType() != EntityNS::WILD_CREATURE) {
+            if ((*ActivePlayer_)->getType() == EntityNS::INTELLIGENT_CREATURE) {
+                auto ptr_wild = dynamic_cast<EntityNS::IntelligentCreature *>((*ActivePlayer_).get());
+                item = ptr_wild->throw_weapon();
+            } else if ((*ActivePlayer_)->getType() == EntityNS::OPERATIVE) {
+                auto ptr_oper = dynamic_cast<EntityNS::Operative *>((*ActivePlayer_).get());
+                item = ptr_oper->throw_item(index);
+            } else if ((*ActivePlayer_)->getType() == EntityNS::FORAGER) {
+                auto ptr_foo = dynamic_cast<EntityNS::Forager *>((*ActivePlayer_).get());
+                ptr_foo->throw_item(index);
+            }
+            inventory->push_back(std::move(item));
+        } else {
+            throw std::invalid_argument("This type entity unable to throw items.");
+        }
+    }
+
+    void Game::throw_item_container(int index) {
+        throw_item(CurrentLevel_.get_inventory_container((*ActivePlayer_)->getPos()), index);
+    }
+
+    void Game::throw_all(InventoryNS::Inventory *inventory) {
+        if ((*ActivePlayer_)->getType() == EntityNS::FORAGER) {
+            auto ptr_foo = dynamic_cast<EntityNS::Forager *>((*ActivePlayer_).get());
+            ptr_foo->drop_all(*inventory);
+        } else {
+            throw std::invalid_argument("This type entity unable to throw all items.");
+        }
+    }
+
+    void Game::throw_all_items_ground() {
+        throw_all(CurrentLevel_.get_inventory_ground((*ActivePlayer_)->getPos()));
+    }
+
+    void Game::throw_item_container() {
+        throw_all(CurrentLevel_.get_inventory_container((*ActivePlayer_)->getPos()));
+    }
+
+    void Game::change_weapon(int index) {
+        if ((*ActivePlayer_)->getType() == EntityNS::OPERATIVE) {
+            auto ptr_oper = dynamic_cast<EntityNS::Operative *>((*ActivePlayer_).get());
+            ptr_oper->change_weapon(index);
+        } else {
+            throw std::invalid_argument("This type entity unable to throw all items.");
+        }
+    }
+
+    std::vector<std::pair<int, int>> Game::find_containers() {
+        return CurrentLevel_.find_container();
+    }
+
+    std::vector<std::shared_ptr<EntityNS::Entity>> Game::find_enemy(std::vector<std::pair<int, int>> &visiably_cells) {
+        return CurrentLevel_.find_enemy((*ActivePlayer_), (*ActiveTeam_), visiably_cells);
+    }
+
+    std::vector<std::pair<int, int>> Game::update_visibility() {
+        return CurrentLevel_.getVisibleCells((*ActivePlayer_)->getPos(), (*ActivePlayer_)->getVisibilityRadius());
+    }
+
+    EntityNS::EntityType Game::getPlayerType() {
+        return (*ActivePlayer_)->getType();
+    }
+
+    std::vector<ItemNS::Item *> Game::show_items(InventoryNS::Inventory &inventory) {
+        return inventory.show_items();
+    }
+
+    std::vector<ItemNS::Item *> Game::show_items_ground() {
+        return show_items(*CurrentLevel_.get_inventory_ground((*ActivePlayer_)->getPos()));
+    }
+
+    std::vector<ItemNS::Item *> Game::show_items_container() {
+        return show_items(*CurrentLevel_.get_inventory_container((*ActivePlayer_)->getPos()));
+    }
+
+    std::vector<ItemNS::Item *> Game::show_items_player() {
+        if ((*ActivePlayer_)->getType() == EntityNS::OPERATIVE) {
+
+        } else if ((*ActivePlayer_)->getType() == EntityNS::OPERATIVE) {
+
+        } else {
+            throw std::invalid_argument("This entity has no inventory");
+        }
+    }
+
 
 } // GameNS

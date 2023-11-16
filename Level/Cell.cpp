@@ -104,10 +104,11 @@ void LevelNS::Cell::setType(LevelNS::CellType type) {
     Type_ = type;
 }
 
-std::vector<const ItemNS::Item *> LevelNS::Cell::show_items_ground() const {
+std::vector<ItemNS::Item *> LevelNS::Cell::show_items_ground() {
     return ItemsGround_.show_items();
 }
-std::vector<const ItemNS::Item *> LevelNS::Cell::show_items_container() const {
+
+std::vector<ItemNS::Item *> LevelNS::Cell::show_items_container() {
     return ItemsContainer_.show_items();
 }
 
@@ -115,14 +116,22 @@ std::unique_ptr<ItemNS::Item> LevelNS::Cell::take_item_ground(int index) {
     if (index < 0 || index >= ItemsGround_.getSize()) {
         throw std::out_of_range("Invalid index");
     }
-    return ItemsGround_.throw_item(ItemsGround_.begin()+index);
+    return ItemsGround_.throw_item(ItemsGround_.begin() + index);
 }
 
 std::unique_ptr<ItemNS::Item> LevelNS::Cell::take_item_container(int index) {
     if (index < 0 || index >= ItemsContainer_.getSize()) {
         throw std::out_of_range("Invalid index");
     }
-    return ItemsContainer_.throw_item(ItemsContainer_.begin()+index);
+    return ItemsContainer_.throw_item(ItemsContainer_.begin() + index);
+}
+
+InventoryNS::Inventory *LevelNS::Cell::get_inventory_ground() {
+    return &ItemsGround_;
+}
+
+InventoryNS::Inventory *LevelNS::Cell::get_inventory_container() {
+    return &ItemsContainer_;
 }
 
 

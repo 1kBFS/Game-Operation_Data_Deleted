@@ -140,6 +140,7 @@ TEST_CASE("Inventory") {
 TEST_CASE("OPERATIVE") {
     // init operative with one weapon in hand and one in inventory
     EntityNS::Operative operative_1("Storm Trooper"), operative_to_kill("Enemy", 100, 100, 6, 6, 1, 1, 2, 15, 0);
+    REQUIRE(operative_1.getCurrentWeight() == 0);
     REQUIRE(operative_1.getType() == EntityNS::EntityType::OPERATIVE);
     WeaponNS::Weapon first_active_weapon("AK-47", 1, 5);
     operative_1.setActiveWeapon(first_active_weapon);
@@ -290,5 +291,8 @@ TEST_CASE("LEVEL") {
     sort(answer.begin(), answer.end());
     sort(points.begin(), points.end());
     REQUIRE(compareVectors(points, answer));
+
+    auto ptr = level.get_inventory_container({0, 0});
+    REQUIRE(ptr->getCurWeight() == 0);
 
 }

@@ -41,12 +41,18 @@ namespace LevelNS {
 
         std::unique_ptr<ItemNS::Item> take_item_container(std::pair<int, int> pos, int index);
 
-        [[nodiscard]] std::vector<const ItemNS::Item *> show_items_ground(std::pair<int, int> pos) const;
+        InventoryNS::Inventory *get_inventory_ground(std::pair<int, int> pos);
 
-        [[nodiscard]] std::vector<const ItemNS::Item *> show_items_container(std::pair<int, int> pos) const;
+        InventoryNS::Inventory *get_inventory_container(std::pair<int, int> pos);
+
+        [[nodiscard]] std::vector<ItemNS::Item *> show_items_ground(std::pair<int, int> pos);
+
+        [[nodiscard]] std::vector<ItemNS::Item *> show_items_container(std::pair<int, int> pos);
 
         void setCellType(std::pair<int, int> pos, CellType type);
+
         CellType getCellType(std::pair<int, int> pos);
+
         std::vector<std::pair<int, int>> getVisibleCells(std::pair<int, int> start_pos, int radius);
 
         static std::vector<std::pair<int, int>>
@@ -57,11 +63,13 @@ namespace LevelNS {
         std::vector<std::shared_ptr<EntityNS::Entity>>
         find_enemy(std::shared_ptr<EntityNS::Entity> &my_entity, TeamNS::Team &my_team,
                    std::vector<std::pair<int, int>> &visiably_cells);
+
         std::vector<std::pair<int, int>> find_container();
 
     private:
 
         [[nodiscard]] bool check_coords(std::pair<int, int> pos) const;
+
         std::vector<std::vector<Cell>> Board_;
     };
 

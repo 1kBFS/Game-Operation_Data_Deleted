@@ -7,6 +7,7 @@
 #include "Entity.h"
 namespace EntityNS {
     class Forager:Entity {
+    public:
         void drop_all(InventoryNS::Inventory &inventory);
 
         // index in unit inventory

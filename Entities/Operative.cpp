@@ -5,7 +5,6 @@
 #include "Operative.h"
 
 
-
 int EntityNS::Operative::getReloadTime() const {
     return ReloadTime_;
 }
@@ -35,7 +34,8 @@ EntityNS::EntityType EntityNS::Operative::getType() const {
 }
 
 
-EntityNS::Operative::Operative(const std::string &name, int maxHeatPoint, int curHeatPoint, int curTime, int avaliableTime,
+EntityNS::Operative::Operative(const std::string &name, int maxHeatPoint, int curHeatPoint, int curTime,
+                               int avaliableTime,
                                int stepTime, int visibilityRadius, int reloadTime, int maxWeight, int accuracy)
         : Entity(name, maxHeatPoint, curHeatPoint, curTime, avaliableTime, stepTime, visibilityRadius),
           ReloadTime_(reloadTime), maxWeight_(maxWeight), Accuracy_(accuracy) {}
@@ -77,20 +77,24 @@ std::string EntityNS::Operative::getActiveWeaponTitle() const {
 }
 
 
-
 int EntityNS::Operative::getCurrentWeight() const {
-    return Inventory_.getCurWeight() + ActiveWeapon_->getWeight();
+    if (ActiveWeapon_) {
+        return Inventory_.getCurWeight() + ActiveWeapon_->getWeight();
+    } else {
+        return Inventory_.getCurWeight();
+    }
+
 }
 
 void EntityNS::Operative::take_item(InventoryNS::Inventory &inventory, int index) {
     if (index >= inventory.getSize() || index < 0) {
         throw std::out_of_range("Invalid index.");
     }
-    auto& tempPtr = *(inventory.begin()+index);
+    auto &tempPtr = *(inventory.begin() + index);
     if (tempPtr->getWeight() + this->getCurrentWeight() > maxWeight_) {
         throw std::runtime_error("Player too weak to carry this item now.");
     }
-    auto ptr = inventory.throw_item(inventory.begin()+index);
+    auto ptr = inventory.throw_item(inventory.begin() + index);
     this->Inventory_.push_back(std::move(ptr));
 }
 
@@ -103,7 +107,7 @@ void EntityNS::Operative::move(int new_i, int new_j) {
     }
     i = new_i;
     j = new_j;
-    curTime_-=StepTime_;
+    curTime_ -= StepTime_;
 }
 
 std::optional<InventoryNS::Inventory> EntityNS::Operative::die() {
@@ -121,11 +125,11 @@ std::unique_ptr<ItemNS::Item> EntityNS::Operative::throw_item(int index) {
     if (index >= Inventory_.getSize() || index < 0) {
         throw std::out_of_range("Invalid index.");
     }
-    return Inventory_.throw_item(Inventory_.begin()+index);
+    return Inventory_.throw_item(Inventory_.begin() + index);
 }
 
 void EntityNS::Operative::reload(RoundNS::RoundContainer &container) {
-    if (curTime_ < std::max(ReloadTime_, ActiveWeapon_->getReloadTime())){
+    if (curTime_ < std::max(ReloadTime_, ActiveWeapon_->getReloadTime())) {
         throw std::runtime_error("Too little time to perform the operation.");
     }
     ActiveWeapon_->reload(container);
@@ -136,21 +140,21 @@ bool EntityNS::Operative::shot(EntityNS::Entity &enemy) {
     if (ActiveWeapon_ == nullptr) {
         throw std::runtime_error("No active weapon is chosen.");
     }
-    if (curTime_ < ActiveWeapon_->getShotTime()){
+    if (curTime_ < ActiveWeapon_->getShotTime()) {
         throw std::runtime_error("Too little time to perform the operation.");
     }
     int success_probability = rand() % 100 + 1;
     if (success_probability <= Accuracy_) {
         enemy.decrease_hp(ActiveWeapon_->shot());
-        curTime_-=ActiveWeapon_->getShotTime();
+        curTime_ -= ActiveWeapon_->getShotTime();
         return true;
     }
-    curTime_-=ActiveWeapon_->getShotTime();
+    curTime_ -= ActiveWeapon_->getShotTime();
     return false;
 
 }
 
-void EntityNS::Operative::put_item(std::unique_ptr<ItemNS::Item>&& new_item) {
+void EntityNS::Operative::put_item(std::unique_ptr<ItemNS::Item> &&new_item) {
     Inventory_.push_back(std::move(new_item));
 }
 

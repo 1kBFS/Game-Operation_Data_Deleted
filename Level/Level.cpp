@@ -100,14 +100,14 @@ namespace LevelNS {
         Board_[pos.first][pos.second].remove_item_container(index);
     }
 
-    std::vector<const ItemNS::Item *> Level::show_items_ground(std::pair<int, int> pos) const {
+    std::vector<ItemNS::Item *> Level::show_items_ground(std::pair<int, int> pos) {
         if (!check_coords(pos)) {
             throw std::out_of_range("Invalid coords");
         }
         return Board_[pos.first][pos.second].show_items_ground();
     }
 
-    std::vector<const ItemNS::Item *> Level::show_items_container(std::pair<int, int> pos) const {
+    std::vector<ItemNS::Item *> Level::show_items_container(std::pair<int, int> pos)  {
         if (!check_coords(pos)) {
             throw std::out_of_range("Invalid coords");
         }
@@ -231,7 +231,24 @@ namespace LevelNS {
     }
 
     CellType Level::getCellType(std::pair<int, int> pos) {
+        if (!check_coords(pos)) {
+            throw std::out_of_range("Invalid coords");
+        }
         return Board_[pos.first][pos.second].getType();
+    }
+
+    InventoryNS::Inventory *Level::get_inventory_ground(std::pair<int, int> pos) {
+        if (!check_coords(pos)) {
+            throw std::out_of_range("Invalid coords");
+        }
+        return Board_[pos.first][pos.second].get_inventory_ground();
+    }
+
+    InventoryNS::Inventory *Level::get_inventory_container(std::pair<int, int> pos) {
+        if (!check_coords(pos)) {
+            throw std::out_of_range("Invalid coords");
+        }
+        return Board_[pos.first][pos.second].get_inventory_container();
     }
 
 

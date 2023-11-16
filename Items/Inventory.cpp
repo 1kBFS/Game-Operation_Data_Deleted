@@ -15,20 +15,20 @@ namespace InventoryNS {
         return curWeight;
     }
 
-    Inventory::Inventory(Inventory &&inventory) noexcept{
+    Inventory::Inventory(Inventory &&inventory) noexcept {
         curWeight = inventory.curWeight;
         inventory.curWeight = 0;
         Elements_ = std::move(inventory.Elements_);
     }
 
-    Inventory &Inventory::operator=(Inventory &&inventory) noexcept{
+    Inventory &Inventory::operator=(Inventory &&inventory) noexcept {
         curWeight = inventory.curWeight;
         inventory.curWeight = 0;
         Elements_ = std::move(inventory.Elements_);
         return *this;
     }
 
-    void Inventory::push_back(std::unique_ptr<ItemNS::Item>&& new_item) {
+    void Inventory::push_back(std::unique_ptr<ItemNS::Item> &&new_item) {
         curWeight += new_item->getWeight();
         Elements_.push_back(std::move(new_item));
     }
@@ -43,8 +43,8 @@ namespace InventoryNS {
 
     Inventory::InventoryIterator Inventory::find(const std::string &title) {
 
-        for (auto it = Elements_.begin(); it != Elements_.end(); it++){
-            if ((*it)->GetTitle() == title){
+        for (auto it = Elements_.begin(); it != Elements_.end(); it++) {
+            if ((*it)->GetTitle() == title) {
                 return it;
             }
         }
@@ -60,12 +60,12 @@ namespace InventoryNS {
     }
 
     void Inventory::erase(Inventory::InventoryIterator pos) {
-        curWeight-=(*pos)->getWeight();
+        curWeight -= (*pos)->getWeight();
         Elements_.erase(pos);
     }
 
     void Inventory::put_all(Inventory &inventory) {
-        for (auto& el : inventory){
+        for (auto &el: inventory) {
             this->push_back(std::move(el));
         }
         inventory.Elements_.clear();
@@ -73,14 +73,14 @@ namespace InventoryNS {
     }
 
     std::unique_ptr<ItemNS::Item> Inventory::throw_item(Inventory::InventoryIterator pos) {
-        curWeight-=(*pos)->getWeight();
+        curWeight -= (*pos)->getWeight();
         std::unique_ptr<ItemNS::Item> ptr = std::move(*pos);
         Elements_.erase(pos);
         return ptr;
     }
 
-    std::vector<const ItemNS::Item *> Inventory::show_items() const {
-        std::vector<const ItemNS::Item *> result;
+    std::vector<ItemNS::Item *> Inventory::show_items() {
+        std::vector<ItemNS::Item *> result;
         for (auto &el: Elements_) {
             result.push_back(el.get());
         }
@@ -89,8 +89,8 @@ namespace InventoryNS {
 
     Inventory::InventoryIterator Inventory::find(int index) {
         int i = 0;
-        for (auto it = Elements_.begin(); it != Elements_.end(); it++, i++){
-            if (i == index){
+        for (auto it = Elements_.begin(); it != Elements_.end(); it++, i++) {
+            if (i == index) {
                 return it;
             }
         }

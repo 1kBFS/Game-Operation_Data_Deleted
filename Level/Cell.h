@@ -35,13 +35,17 @@ namespace LevelNS {
 
         std::unique_ptr<ItemNS::Item> take_item_container(int index);
 
-        [[nodiscard]] std::vector<const ItemNS::Item *> show_items_ground() const;
+        [[nodiscard]] std::vector<ItemNS::Item *> show_items_ground();
 
-        [[nodiscard]] std::vector<const ItemNS::Item *> show_items_container() const;
+        [[nodiscard]] std::vector<ItemNS::Item *> show_items_container();
 
         void place_unit(std::shared_ptr<EntityNS::Entity> &entity);
 
         void remove_unit(CellEntitiesIterator pos);
+
+        InventoryNS::Inventory *get_inventory_ground();
+
+        InventoryNS::Inventory *get_inventory_container();
 
         CellEntitiesIterator find_unit(std::shared_ptr<EntityNS::Entity> &entity_to_find);
 

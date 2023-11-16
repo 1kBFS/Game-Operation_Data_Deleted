@@ -10,7 +10,6 @@
 #include <map>
 
 namespace GameNS {
-
     class Game {
         Game(int size, std::vector<TeamNS::Team> &&teams);
 
@@ -28,9 +27,33 @@ namespace GameNS {
 
         void use_aid(int index);
 
-        std::unique_ptr<ItemNS::Item> take_item_ground(std::pair<int, int> pos, int index);
+        void change_weapon(int index);
 
-        std::unique_ptr<ItemNS::Item> take_item_container(std::pair<int, int> pos, int index);
+        void take_item_ground(int index);
+
+        void take_item_container(int index);
+
+        void throw_item_ground(int index = 0);
+
+        void throw_item_container(int index = 0);
+
+        void throw_all_items_ground();
+
+        void throw_item_container();
+
+        std::vector<ItemNS::Item *> show_items_ground();
+
+        std::vector<ItemNS::Item *> show_items_container();
+
+        std::vector<ItemNS::Item *> show_items_player();
+
+        std::vector<std::pair<int, int>> find_containers();
+
+        std::vector<std::shared_ptr<EntityNS::Entity>> find_enemy(std::vector<std::pair<int, int>> &visiably_cells);
+
+        std::vector<std::pair<int, int>> update_visibility();
+
+        EntityNS::EntityType getPlayerType();
 
         LevelNS::CellType getCellType(std::pair<int, int> pos);
 
@@ -43,6 +66,14 @@ namespace GameNS {
         std::vector<TeamNS::Team> Teams_;
 
         std::map<std::weak_ptr<EntityNS::Entity>, TeamNS::Team &> which_team;
+
+        void take_item(int index, InventoryNS::Inventory *inventory);
+
+        void throw_item(InventoryNS::Inventory *inventory, int index = 0);
+
+        void throw_all(InventoryNS::Inventory *inventory);
+
+        static std::vector<ItemNS::Item *> show_items(InventoryNS::Inventory& inventory);
     };
 
 } // GameNS
