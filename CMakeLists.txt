@@ -10,7 +10,7 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_executable(Lab3 main.cpp Items/Item.h Items/Item.cpp Items/RoundContainer.cpp Items/RoundContainer.h Items/FirstAidKit.h Items/FirstAidKit.cpp Items/Weapon.cpp Items/Weapon.h
         Items/Inventory.h Items/Inventory.cpp Entities/Entity.h Entities/Entity.cpp Entities/Operative.h Entities/Operative.cpp Entities/Wild_Creature.h Entities/Wild_Creature.cpp Entities/Intelligent_Creature.cpp Entities/Intelligent_Creature.h Entities/Forager.h Entities/Forager.cpp
-        Level/Team.h Level/Team.cpp Level/Cell.h Level/Cell.cpp Level/Level.h Level/Level.cpp Game/Game.h Game/Game.cpp)
+        Level/Team.h Level/Team.cpp Level/Cell.h Level/Cell.cpp Level/Level.h Level/Level.cpp Game/Game.h Game/Game.cpp UI/Game_Controller.cpp UI/Game_Controller.h UI/Tile_Map.cpp UI/Tile_Map.h)
 find_package(SFML 2.5 COMPONENTS graphics audio REQUIRED)
 find_package(TGUI 1 REQUIRED)
 target_link_libraries(Lab3 sfml-graphics sfml-audio TGUI::TGUI)

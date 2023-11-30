@@ -90,7 +90,7 @@ namespace GameNS {
 
     }
 
-    LevelNS::CellType Game::getCellType(std::pair<int, int> pos) {
+    LevelNS::CellType Game::getCellType(std::pair<int, int> pos) const {
         return CurrentLevel_.getCellType(pos);
     }
 
@@ -220,11 +220,11 @@ namespace GameNS {
         return CurrentLevel_.find_enemy((*ActivePlayer_), (*ActiveTeam_), visiably_cells);
     }
 
-    std::vector<std::pair<int, int>> Game::update_visibility() const {
+    std::vector<std::pair<int, int>> Game::getVisibleCells() const {
         return CurrentLevel_.getVisibleCells((*ActivePlayer_)->getPos(), (*ActivePlayer_)->getVisibilityRadius());
     }
 
-    EntityNS::EntityType Game::getPlayerType() {
+    const EntityNS::EntityType Game::getPlayerType() const {
         return (*ActivePlayer_)->getType();
     }
 
@@ -247,6 +247,29 @@ namespace GameNS {
 
         } else {
             throw std::invalid_argument("This entity has no inventory");
+        }
+    }
+
+    std::pair<int, int> Game::getActivePlayerCoord() const {
+        return (*ActivePlayer_)->getPos();
+    }
+
+    void Game::move_direction(Game::MoveDirectionType &direction) {
+        auto [i, j] = (*ActivePlayer_)->getPos();
+        switch (direction) {
+
+            case DOWN:
+                move({i + 1, j});
+                break;
+            case UP:
+                move({i - 1, j});
+                break;
+            case RIGHT:
+                move({i, j + 1});
+                break;
+            case LEFT:
+                move({i, j - 1});
+                break;
         }
     }
 

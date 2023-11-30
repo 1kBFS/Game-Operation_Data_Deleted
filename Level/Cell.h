@@ -10,7 +10,7 @@
 
 namespace LevelNS {
     enum CellType {
-        FLOOR, WALL, WINDOW, BARRIER, CONTAINER
+        FLOOR, WALL, WINDOW, BARRIER, CONTAINER, FOG
     };
 
     class Cell {

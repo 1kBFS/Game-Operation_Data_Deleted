@@ -42,9 +42,16 @@ namespace LevelNS {
         if (it == Board_[pos.first][pos.second].end()) {
             throw std::runtime_error("No such entity");
         } else {
+            auto old_pos = entity->getPos();
             entity->move(new_pos.first, new_pos.second);
+            try {
+                Board_[new_pos.first][new_pos.second].place_unit(entity);
+            } catch (...) {
+                entity->setCurTime(entity->getCurTime() + entity->getStepTime());
+                entity->setPos(old_pos);
+                throw;
+            }
             Board_[pos.first][pos.second].remove_unit(it);
-            Board_[new_pos.first][new_pos.second].place_unit(entity);
         }
 
 
@@ -107,7 +114,7 @@ namespace LevelNS {
         return Board_[pos.first][pos.second].show_items_ground();
     }
 
-    std::vector<ItemNS::Item *> Level::show_items_container(std::pair<int, int> pos)  {
+    std::vector<ItemNS::Item *> Level::show_items_container(std::pair<int, int> pos) {
         if (!check_coords(pos)) {
             throw std::out_of_range("Invalid coords");
         }
@@ -159,7 +166,7 @@ namespace LevelNS {
         return result;
     }
 
-    std::vector<std::pair<int, int>> Level::getVisibleCells(std::pair<int, int> start_pos, int radius) const{
+    std::vector<std::pair<int, int>> Level::getVisibleCells(std::pair<int, int> start_pos, int radius) const {
         const int plusX[4] = {0, 0, 1, -1};
         const int plusY[4] = {1, -1, 0, 0};
         std::queue<std::pair<int, int>> q;
@@ -194,13 +201,15 @@ namespace LevelNS {
 
     }
 
-    bool Level::check_all(std::vector<std::pair<int, int>> &cells, const std::function<bool(const Cell &)> &checker)  const{
+    bool
+    Level::check_all(std::vector<std::pair<int, int>> &cells, const std::function<bool(const Cell &)> &checker) const {
+        int cnt = 0;
         for (auto &[i, j]: cells) {
-            if (!checker(Board_[i][j])) {
-                return false;
+            if (checker(Board_[i][j])) {
+                cnt++;
             }
         }
-        return true;
+        return (cnt >= cells.size() - 1);
     }
 
     std::vector<std::shared_ptr<EntityNS::Entity>>
@@ -230,7 +239,7 @@ namespace LevelNS {
         return result;
     }
 
-    CellType Level::getCellType(std::pair<int, int> pos) {
+    CellType Level::getCellType(std::pair<int, int> pos) const {
         if (!check_coords(pos)) {
             throw std::out_of_range("Invalid coords");
         }

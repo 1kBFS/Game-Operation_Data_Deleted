@@ -17,7 +17,7 @@ namespace LevelNS {
 
     class Level {
     public:
-        explicit Level(int size);
+        explicit Level(int size=0);
 
         void place_unit(std::pair<int, int> new_pos, std::shared_ptr<EntityNS::Entity> &entity);
 
@@ -51,7 +51,7 @@ namespace LevelNS {
 
         void setCellType(std::pair<int, int> pos, CellType type);
 
-        CellType getCellType(std::pair<int, int> pos);
+        [[nodiscard]] CellType getCellType(std::pair<int, int> pos) const;
 
         std::vector<std::pair<int, int>> getVisibleCells(std::pair<int, int> start_pos, int radius) const;
 

@@ -12,7 +12,13 @@
 namespace GameNS {
     class Game {
     public:
+        enum MoveDirectionType {
+            LEFT, RIGHT, UP, DOWN
+        };
+
         Game(int size, std::vector<TeamNS::Team> &&teams);
+
+        Game() = default;
 
         void reset_time();
 
@@ -21,6 +27,8 @@ namespace GameNS {
         void next_team();
 
         void move(std::pair<int, int> new_pos);
+
+        void move_direction(MoveDirectionType &direction);
 
         void shot(std::pair<int, int> attack_pos, std::shared_ptr<EntityNS::Entity> &enemy);
 
@@ -52,13 +60,15 @@ namespace GameNS {
 
         std::vector<std::shared_ptr<EntityNS::Entity>> find_enemy(std::vector<std::pair<int, int>> &visiably_cells);
 
-        [[nodiscard]] std::vector<std::pair<int, int>> update_visibility() const;
+        [[nodiscard]] std::vector<std::pair<int, int>> getVisibleCells() const;
 
-        EntityNS::EntityType getPlayerType();
+        [[nodiscard]] const EntityNS::EntityType getPlayerType() const;
 
-        LevelNS::CellType getCellType(std::pair<int, int> pos);
+        [[nodiscard]] LevelNS::CellType getCellType(std::pair<int, int> pos) const;
 
         void setCellType(std::pair<int, int> pos, LevelNS::CellType new_type);
+
+        std::pair<int, int> getActivePlayerCoord() const;
 
     private:
         TeamNS::Team::TeamIterator ActivePlayer_;
@@ -74,7 +84,7 @@ namespace GameNS {
 
         void throw_all(InventoryNS::Inventory *inventory);
 
-        static std::vector<ItemNS::Item *> show_items(InventoryNS::Inventory& inventory);
+        static std::vector<ItemNS::Item *> show_items(InventoryNS::Inventory &inventory);
     };
 
 } // GameNS
