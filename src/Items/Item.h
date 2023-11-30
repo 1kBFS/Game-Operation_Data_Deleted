@@ -14,9 +14,17 @@ namespace ItemNS {
     enum ItemType {
         WEAPON, AID_KIT, CONTAINER
     };
-
+    /*!
+	\brief Базовый класс для предметов
+    */
     class Item {
     public:
+        /*!
+	    @brief Конструктор класса Item.
+	    @param title - название предмета
+        @param weight - вес предмета
+	    @throws std::invalid_argument в случае отрицательного веса
+        */
         Item(std::string title, int weight);
 
         [[nodiscard]] const std::string &GetTitle() const {

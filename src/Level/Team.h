@@ -12,20 +12,42 @@ namespace TeamNS {
 
     class Team {
     public:
+        /*!
+         * @brief Конструктор класса Team.
+         * @param title название команды.
+         */
         explicit Team(std::string title);
 
         typedef std::vector<std::shared_ptr<EntityNS::Entity>>::iterator TeamIterator;
         typedef std::vector<std::shared_ptr<EntityNS::Entity>>::const_iterator const_TeamIterator;
 
+        /*!
+         * @brief Удалить юнита из команды
+         * @param pos итератор на позицию
+         */
         void remove_unit(TeamIterator pos);
-        void push_back(std::shared_ptr<EntityNS::Entity>&& new_entity);
-        TeamIterator find(std::shared_ptr<EntityNS::Entity>& entity_to_find);
+
+        /*!
+         * @brief Переместить юнита в конец команды.
+         * @param new_entity юнит для добавления.
+         */
+        void push_back(std::shared_ptr<EntityNS::Entity> &&new_entity);
+
+        /*!
+         * @brief Найти юнита.
+         * @param entity_to_find юнит для поиска.
+         * @return итератор на позицию.
+         */
+        TeamIterator find(std::shared_ptr<EntityNS::Entity> &entity_to_find);
+
         [[nodiscard]] int getSize() const;
 
         TeamIterator begin();
+
         TeamIterator end();
 
         [[nodiscard]] const_TeamIterator begin() const;
+
         [[nodiscard]] const_TeamIterator end() const;
 
     private:

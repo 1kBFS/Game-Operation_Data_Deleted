@@ -18,18 +18,42 @@ namespace EntityNS {
     enum EntityType {
         OPERATIVE, WILD_CREATURE, INTELLIGENT_CREATURE, FORAGER
     };
-
+    /*!
+     * @brief Базовый класс юнитов.
+     */
     class Entity {
     public:
+        /*!
+         * Конструктор для Entity.
+         * @param name название юнита
+         * @param maxHeatPoint максимальное кол-во очков здоровья
+         * @param curHeatPoint текущее кол-во очков здоровья
+         * @param curTime доступное кол-во очков действия
+         * @param avaliableTime максимальное кол-во очков действия за раунд
+         * @param stepTime время на шаг
+         * @param visibilityRadius радиус обзора
+         */
         Entity(const std::string &name, int maxHeatPoint, int curHeatPoint, int curTime, int avaliableTime,
                int stepTime, int visibilityRadius);
 
         explicit Entity(std::string name) : Name_(std::move(name)) {}
 
+        /*!
+         * Чисто виртуальный метод получения типа юнита.
+         * @return EntityType
+         */
         [[nodiscard]] virtual EntityType getType() const = 0;
-
+        /*!
+         * Чисто виртуальный метод приказа перемещения.
+         * @param new_i - новая координата по "y".
+         * @param new_j - новая координата по "x".
+         */
         virtual void move(int new_i, int new_j) = 0;
 
+        /*!
+         * Чисто виртуальный метод приказа смерти.
+         * @returns Инвентарь юнита при его наличии.
+         */
         virtual std::optional<InventoryNS::Inventory> die() = 0;
 
         [[nodiscard]] const std::string &getName() const;
@@ -64,8 +88,16 @@ namespace EntityNS {
 
         void setPos(std::pair<int, int> pos);
 
+        /*!
+         * @brief Сбросить количество очков перемещения до исходного уровня.
+         */
         void reset_time();
 
+        /*!
+         * @brief Уменьшить кол-во очков hp на величину amount.
+         * @param amount - на сколько нужно уменьшить очки здоровья.
+         * @details curHeatPoint становится равным max(curHeatPoint_-amount, 0);
+         */
         void decrease_hp(int amount);
 
         virtual ~Entity() = default;

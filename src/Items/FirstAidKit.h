@@ -8,9 +8,18 @@
 #include "Item.h"
 
 namespace FirstAidKitNS {
-
+    /*!
+	@brief Аптечка. Наследуется от Item.
+    */
     class FirstAidKit : public ItemNS::Item {
     public:
+        /*!
+         * @brief Конструктор FirstAidKit.
+         * @param title название аптечки
+         * @param weight вес аптечки
+         * @param usageTime время использования
+         * @param heatPointBoost количество hp, на которое  будет повышен уровень здоровья
+         */
         explicit FirstAidKit(const std::string &title, int weight=1, int usageTime=1, int heatPointBoost=25);
 
         [[nodiscard]] int getUsageTime() const;

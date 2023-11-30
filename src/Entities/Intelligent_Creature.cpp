@@ -52,11 +52,15 @@ namespace EntityNS {
     }
 
     std::unique_ptr<ItemNS::Item> IntelligentCreature::throw_weapon() {
-        std::unique_ptr<ItemNS::Item> ptr_thrown_item;
-        auto ptr = ActiveWeapon_.release();
-        ptr_thrown_item.reset(ptr);
-        ActiveWeapon_.reset();
-        return ptr_thrown_item;
+        if (ActiveWeapon_) {
+            std::unique_ptr<ItemNS::Item> ptr_thrown_item;
+            auto ptr = ActiveWeapon_.release();
+            ptr_thrown_item.reset(ptr);
+            ActiveWeapon_.reset();
+            return ptr_thrown_item;
+        } else {
+            throw std::runtime_error("No weapon unit holds.");
+        }
     }
 
     void IntelligentCreature::put_weapon(std::unique_ptr<WeaponNS::Weapon> &&new_item) {

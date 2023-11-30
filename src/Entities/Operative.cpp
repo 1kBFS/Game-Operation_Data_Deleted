@@ -129,6 +129,9 @@ std::unique_ptr<ItemNS::Item> EntityNS::Operative::throw_item(int index) {
 }
 
 void EntityNS::Operative::reload(RoundNS::RoundContainer &container) {
+    if (ActiveWeapon_ == nullptr) {
+        throw std::runtime_error("No active weapon is chosen.");
+    }
     if (curTime_ < std::max(ReloadTime_, ActiveWeapon_->getReloadTime())) {
         throw std::runtime_error("Too little time to perform the operation.");
     }
