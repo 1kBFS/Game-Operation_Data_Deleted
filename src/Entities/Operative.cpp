@@ -146,9 +146,13 @@ bool EntityNS::Operative::shot(EntityNS::Entity &enemy) {
     if (curTime_ < ActiveWeapon_->getShotTime()) {
         throw std::runtime_error("Too little time to perform the operation.");
     }
+    if (!checkDist(enemy.getPos(), getPos(), VisibilityRadius_)) {
+        throw std::runtime_error("Unit too far to shot.");
+    }
     int success_probability = rand() % 100 + 1;
+    auto damage = ActiveWeapon_->shot();
     if (success_probability <= Accuracy_) {
-        enemy.decrease_hp(ActiveWeapon_->shot());
+        enemy.decrease_hp(damage);
         curTime_ -= ActiveWeapon_->getShotTime();
         return true;
     }
@@ -163,6 +167,26 @@ void EntityNS::Operative::put_item(std::unique_ptr<ItemNS::Item> &&new_item) {
 
 ItemNS::Item *EntityNS::Operative::item_to_use(int index) {
     return (Inventory_.find(index))->get();
+}
+
+std::vector<const ItemNS::Item *> EntityNS::Operative::show_inventory() const {
+    return Inventory_.show_items();
+}
+
+std::string EntityNS::Operative::toString() const {
+    std::string out;
+    out += "---- Operative ----\n";
+    out += "Name: " + Name_ + "\n";
+    out += "Step time: " + std::to_string(StepTime_) + "\n";
+    out += "Visibility Radius: " + std::to_string(VisibilityRadius_) + "\n";
+    out += "Accuracy: " + std::to_string(Accuracy_) + "\n";
+    out += "Current weight: " + std::to_string(this->getCurrentWeight()) + "/" + std::to_string(maxWeight_) + "\n";
+    if (ActiveWeapon_) {
+        out += ActiveWeapon_->toString();
+    } else {
+        out += "No weapon in the hands\n";
+    }
+    return out;
 }
 
 

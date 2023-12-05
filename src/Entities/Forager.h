@@ -73,6 +73,12 @@ namespace EntityNS {
          */
         void setInvetnory(InventoryNS::Inventory &&invetnory);
 
+        [[nodiscard]] std::vector<const ItemNS::Item *> show_inventory() const;
+
+        [[nodiscard]] std::string toString() const override;
+
+        ItemNS::Item *item_to_use(int index);
+
     private:
         InventoryNS::Inventory Inventory_;
     };

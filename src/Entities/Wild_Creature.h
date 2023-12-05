@@ -45,6 +45,8 @@ namespace EntityNS {
 
         ~WildCreature() override = default;
 
+        [[nodiscard]] std::string toString() const override;
+
     private:
         int Damage_ = 1;
         int Accuracy_ = 75;

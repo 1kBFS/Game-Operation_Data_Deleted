@@ -96,7 +96,7 @@ namespace InventoryNS {
          * Получить список предметов в инвентаре.
          * @return вектор не владеющих! raw-pointers.
          */
-        [[nodiscard]] std::vector<ItemNS::Item *> show_items();
+        [[nodiscard]] std::vector<const ItemNS::Item *> show_items() const;
 
     private:
         int curWeight = 0;

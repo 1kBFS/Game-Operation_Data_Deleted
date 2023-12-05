@@ -18,6 +18,7 @@ namespace EntityNS {
     enum EntityType {
         OPERATIVE, WILD_CREATURE, INTELLIGENT_CREATURE, FORAGER
     };
+
     /*!
      * @brief Базовый класс юнитов.
      */
@@ -43,6 +44,7 @@ namespace EntityNS {
          * @return EntityType
          */
         [[nodiscard]] virtual EntityType getType() const = 0;
+
         /*!
          * Чисто виртуальный метод приказа перемещения.
          * @param new_i - новая координата по "y".
@@ -88,6 +90,7 @@ namespace EntityNS {
 
         void setPos(std::pair<int, int> pos);
 
+        static bool checkDist(std::pair<int, int> first, std::pair<int, int> second, int R);
         /*!
          * @brief Сбросить количество очков перемещения до исходного уровня.
          */
@@ -99,6 +102,8 @@ namespace EntityNS {
          * @details curHeatPoint становится равным max(curHeatPoint_-amount, 0);
          */
         void decrease_hp(int amount);
+
+        [[nodiscard]] virtual std::string toString() const = 0;
 
         virtual ~Entity() = default;
 

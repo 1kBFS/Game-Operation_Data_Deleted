@@ -36,15 +36,26 @@ namespace RoundNS {
         return ItemNS::CONTAINER;
     }
 
-    int RoundContainer::extract(int amount){
+    int RoundContainer::extract(int amount) {
         if (amount <= 0) {
-            throw std::invalid_argument("Unable to extract negative amount of bullets.(Maybe, your weapon is already reloaded?)");
+            throw std::invalid_argument(
+                    "Unable to extract negative amount of bullets.(Maybe, your weapon is already reloaded?)");
         }
         if (Size_ <= 0) {
             throw std::runtime_error("Container is empty.");
         }
         int extracted_value = std::min(amount, Size_);
-        Size_-= extracted_value;
+        Size_ -= extracted_value;
         return extracted_value;
+    }
+
+    std::string RoundContainer::toString() const {
+        std::string out;
+        out += "----Ammo Container----\n";
+        out += "Name: " + this->GetTitle() + "\n";
+        out += "Weight: " + std::to_string(this->getWeight()) + "\n";
+        out += "Round Type: " + std::to_string(this->RoundType_) + "\n";
+        out += "Ammo: " + std::to_string(this->Size_) + "/" + std::to_string(this->Capacity_);
+        return out;
     }
 } // RoundNS

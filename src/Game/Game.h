@@ -20,23 +20,17 @@ namespace GameNS {
 
         Game() = default;
 
-        void reset_time();
-
         void next_player();
 
-        void next_team();
+        void prev_player();
 
-        void move(std::pair<int, int> new_pos);
+        bool next_team();
 
         void move_direction(MoveDirectionType &direction);
 
         void shot(std::pair<int, int> attack_pos, std::shared_ptr<EntityNS::Entity> &enemy);
 
-        void reload(int index);
-
-        void use_aid(int index);
-
-        void change_weapon(int index);
+        void use(int index);
 
         void take_item_ground(int index);
 
@@ -46,19 +40,14 @@ namespace GameNS {
 
         void throw_item_container(int index = 0);
 
-        void throw_all_items_ground();
+        [[nodiscard]] std::vector<const ItemNS::Item *> show_items_ground() const;
 
-        void throw_item_container();
+        [[nodiscard]] std::vector<const ItemNS::Item *> show_items_container() const;
 
-        std::vector<ItemNS::Item *> show_items_ground();
+        [[nodiscard]] std::vector<const ItemNS::Item *> show_items_player() const;
 
-        std::vector<ItemNS::Item *> show_items_container();
-
-        std::vector<ItemNS::Item *> show_items_player();
-
-        std::vector<std::pair<int, int>> find_containers();
-
-        std::vector<std::shared_ptr<EntityNS::Entity>> find_enemy(std::vector<std::pair<int, int>> &visiably_cells);
+        std::vector<std::shared_ptr<EntityNS::Entity>>
+        find_enemy(std::vector<std::pair<int, int>> &visiably_cells) const;
 
         [[nodiscard]] std::vector<std::pair<int, int>> getVisibleCells() const;
 
@@ -66,17 +55,24 @@ namespace GameNS {
 
         [[nodiscard]] LevelNS::CellType getCellType(std::pair<int, int> pos) const;
 
+        [[nodiscard]] LevelNS::CellType getMyCell() const;
+
         void setCellType(std::pair<int, int> pos, LevelNS::CellType new_type);
 
-        std::pair<int, int> getActivePlayerCoord() const;
+        [[nodiscard]] std::pair<int, int> getActivePlayerCoord() const;
 
+        [[nodiscard]] std::pair<int, int> getActivePlayerHealth() const;
+
+        [[nodiscard]] std::pair<int, int> getActivePlayerTime() const;
+
+        [[nodiscard]] std::string getActivePlayerDesc() const;
+
+        [[nodiscard]] std::vector<std::pair<std::pair<int, int>, EntityNS::EntityType>> getTeammates() const;
     private:
         TeamNS::Team::TeamIterator ActivePlayer_;
         std::vector<TeamNS::Team>::iterator ActiveTeam_;
         LevelNS::Level CurrentLevel_;
         std::vector<TeamNS::Team> Teams_;
-
-        std::map<std::weak_ptr<EntityNS::Entity>, TeamNS::Team &> which_team;
 
         void take_item(int index, InventoryNS::Inventory *inventory);
 
@@ -84,7 +80,19 @@ namespace GameNS {
 
         void throw_all(InventoryNS::Inventory *inventory);
 
-        static std::vector<ItemNS::Item *> show_items(InventoryNS::Inventory &inventory);
+        static std::vector<const ItemNS::Item *> show_items(const InventoryNS::Inventory &inventory);
+
+        void move(std::pair<int, int> new_pos);
+
+        void reload(int index);
+
+        void use_aid(int index);
+
+        void change_weapon(int index);
+
+        void reset_time();
+
+        bool checkGameOver();
     };
 
 } // GameNS

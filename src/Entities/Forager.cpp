@@ -17,7 +17,7 @@ void EntityNS::Forager::move(int new_i, int new_j) {
     }
     i = new_i;
     j = new_j;
-    curTime_-=StepTime_;
+    curTime_ -= StepTime_;
 }
 
 std::optional<InventoryNS::Inventory> EntityNS::Forager::die() {
@@ -32,7 +32,7 @@ void EntityNS::Forager::take_item(InventoryNS::Inventory &inventory, int index) 
     if (index >= inventory.getSize() || index < 0) {
         throw std::out_of_range("Invalid index.");
     }
-    auto ptr = inventory.throw_item(inventory.begin()+index);
+    auto ptr = inventory.throw_item(inventory.begin() + index);
     this->Inventory_.push_back(std::move(ptr));
 }
 
@@ -40,7 +40,7 @@ std::unique_ptr<ItemNS::Item> EntityNS::Forager::throw_item(int index) {
     if (index >= Inventory_.getSize() || index < 0) {
         throw std::out_of_range("Invalid index.");
     }
-    return Inventory_.throw_item(Inventory_.begin()+index);
+    return Inventory_.throw_item(Inventory_.begin() + index);
 }
 
 // index in unit inventory
@@ -48,7 +48,7 @@ void EntityNS::Forager::drop_into(InventoryNS::Inventory &inventory, int index) 
     if (index >= Inventory_.getSize() || index < 0) {
         throw std::out_of_range("Invalid index.");
     }
-    inventory.push_back(std::move(Inventory_.throw_item(Inventory_.begin()+index)));
+    inventory.push_back(std::move(Inventory_.throw_item(Inventory_.begin() + index)));
 }
 
 void EntityNS::Forager::drop_all(InventoryNS::Inventory &inventory) {
@@ -60,4 +60,21 @@ EntityNS::Forager::Forager(const std::string &name) : Entity(name) {}
 
 void EntityNS::Forager::setInvetnory(InventoryNS::Inventory &&invetnory) {
     Inventory_ = std::move(invetnory);
+}
+
+std::vector<const ItemNS::Item *> EntityNS::Forager::show_inventory() const {
+    return Inventory_.show_items();
+}
+
+std::string EntityNS::Forager::toString() const {
+    std::string out;
+    out += "----Forager----\n";
+    out += "Name: " + Name_ + "\n";
+    out += "Step time: " + std::to_string(StepTime_) + "\n";
+    out += "Visibility Radius: " + std::to_string(VisibilityRadius_) + "\n";
+    return out;
+}
+
+ItemNS::Item *EntityNS::Forager::item_to_use(int index) {
+    return (Inventory_.find(index))->get();
 }

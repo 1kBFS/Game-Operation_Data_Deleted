@@ -107,13 +107,13 @@ namespace LevelNS {
          */
         std::unique_ptr<ItemNS::Item> take_item_container(std::pair<int, int> pos, int index);
 
-        InventoryNS::Inventory *get_inventory_ground(std::pair<int, int> pos);
+        [[nodiscard]]  InventoryNS::Inventory *get_inventory_ground(std::pair<int, int> pos);
 
-        InventoryNS::Inventory *get_inventory_container(std::pair<int, int> pos);
+        [[nodiscard]]  InventoryNS::Inventory *get_inventory_container(std::pair<int, int> pos);
 
-        [[nodiscard]] std::vector<ItemNS::Item *> show_items_ground(std::pair<int, int> pos);
+        [[nodiscard]] std::vector<const ItemNS::Item *> show_items_ground(std::pair<int, int> pos) const;
 
-        [[nodiscard]] std::vector<ItemNS::Item *> show_items_container(std::pair<int, int> pos);
+        [[nodiscard]] std::vector<const ItemNS::Item *> show_items_container(std::pair<int, int> pos) const;
 
         void setCellType(std::pair<int, int> pos, CellType type);
 
@@ -154,12 +154,12 @@ namespace LevelNS {
          */
         std::vector<std::shared_ptr<EntityNS::Entity>>
         find_enemy(std::shared_ptr<EntityNS::Entity> &my_entity, TeamNS::Team &my_team,
-                   std::vector<std::pair<int, int>> &visiably_cells);
+                   std::vector<std::pair<int, int>> &visiably_cells) const;
 
         /*!
          * @brief Найти клетки с контейнерами
          */
-        std::vector<std::pair<int, int>> find_container();
+        std::vector<std::pair<int, int>> find_container() const;
 
         explicit Level(int size = 0);
 

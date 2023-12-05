@@ -14,6 +14,7 @@ namespace ItemNS {
     enum ItemType {
         WEAPON, AID_KIT, CONTAINER
     };
+
     /*!
 	\brief Базовый класс для предметов
     */
@@ -34,6 +35,8 @@ namespace ItemNS {
         [[nodiscard]] int getWeight() const;
 
         [[nodiscard]] virtual ItemType GetType() const = 0;
+
+        [[nodiscard]] virtual std::string toString() const = 0;
 
         virtual ~Item() = default;
 

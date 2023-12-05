@@ -74,6 +74,10 @@ namespace EntityNS {
          */
         void take_item(InventoryNS::Inventory &inventory, int index);
 
+        [[nodiscard]] ItemNS::Item*getActiveWeapon() const;
+
+        std::string toString() const override;
+
     private:
         int Accuracy_;
         std::unique_ptr<WeaponNS::Weapon> ActiveWeapon_;

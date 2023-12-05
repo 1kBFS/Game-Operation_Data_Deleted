@@ -10,7 +10,7 @@ namespace EntityNS {
     }
 
     void WildCreature::move(int new_i, int new_j) {
-        if (new_i < 0 || new_j < 0){
+        if (new_i < 0 || new_j < 0) {
             throw std::invalid_argument("New location coord is positive");
         }
         if (curTime_ < StepTime_) {
@@ -21,7 +21,7 @@ namespace EntityNS {
         }
         i = new_i;
         j = new_j;
-        curTime_-=StepTime_;
+        curTime_ -= StepTime_;
     }
 
     std::optional<InventoryNS::Inventory> WildCreature::die() {
@@ -35,20 +35,31 @@ namespace EntityNS {
         if (enemy.getPos() != this->getPos()) {
             throw std::invalid_argument("The Enemy is not in the same cell.");
         }
-        if (curTime_ < 1){
+        if (curTime_ < 1) {
             throw std::runtime_error("Too little time to perform the operation.");
         }
         int success_probability = rand() % 100 + 1;
         if (success_probability <= Accuracy_) {
             enemy.decrease_hp(Damage_);
-            curTime_-=1;
+            curTime_ -= 1;
             return true;
         }
-        curTime_-=1;
+        curTime_ -= 1;
         return false;
     }
 
     WildCreature::WildCreature(const std::string &name, int damage, int accuracy) : Entity(name), Damage_(damage),
                                                                                     Accuracy_(accuracy) {}
+
+    std::string WildCreature::toString() const {
+        std::string out;
+        out += "----Wild Creature----\n";
+        out += "Name: " + Name_ + "\n";
+        out += "Step time: " + std::to_string(StepTime_) + "\n";
+        out += "Visibility Radius: " + std::to_string(VisibilityRadius_) + "\n";
+        out += "Accuracy: " + std::to_string(Accuracy_) + "\n";
+        out += "Damage: " + std::to_string(Damage_);
+        return out;
+    }
 
 } // EntityNS

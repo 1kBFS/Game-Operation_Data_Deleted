@@ -26,7 +26,7 @@ namespace LevelNS {
         explicit Cell(CellType type = FLOOR) : Type_(type) {}
 
         typedef std::vector<std::shared_ptr<EntityNS::Entity>>::iterator CellEntitiesIterator;
-
+        typedef std::vector<std::shared_ptr<EntityNS::Entity>>::const_iterator const_CellEntitiesIterator;
         /*!
          * @brief Поместить предмет на землю
          * @param new_item предмет для перемещения.
@@ -89,13 +89,13 @@ namespace LevelNS {
          * Получить список предметов для отображения на земле.
          * @return std::vector не владеющих raw-pointers.
          */
-        [[nodiscard]] std::vector<ItemNS::Item *> show_items_ground();
+        [[nodiscard]] std::vector<const ItemNS::Item *> show_items_ground() const;
 
         /*!
          * Получить список предметов для отображения в контейнере.
          * @return std::vector не владеющих raw-pointers.
          */
-        [[nodiscard]] std::vector<ItemNS::Item *> show_items_container();
+        [[nodiscard]] std::vector<const ItemNS::Item *> show_items_container() const;
 
         /*!
          * @brief Разместить юнит этой клетке.
@@ -110,9 +110,9 @@ namespace LevelNS {
          */
         void remove_unit(CellEntitiesIterator pos);
 
-        InventoryNS::Inventory *get_inventory_ground();
+        [[nodiscard]] InventoryNS::Inventory *get_inventory_ground();
 
-        InventoryNS::Inventory *get_inventory_container();
+        [[nodiscard]] InventoryNS::Inventory *get_inventory_container();
 
         /*!
          * Найти юнита на клетке.
@@ -125,6 +125,10 @@ namespace LevelNS {
 
         CellEntitiesIterator end();
 
+        [[nodiscard]] const_CellEntitiesIterator begin() const;
+
+        [[nodiscard]] const_CellEntitiesIterator end() const;
+
         [[nodiscard]] CellType getType() const;
 
         void setType(CellType type);
@@ -136,6 +140,9 @@ namespace LevelNS {
          */
         static bool isVisiable(const Cell &cell) {
             return cell.Type_ == WINDOW || cell.Type_ == FLOOR;
+        }
+        static bool isEmpty(const Cell &cell) {
+            return cell.Type_ == FLOOR;
         }
 
         /*!

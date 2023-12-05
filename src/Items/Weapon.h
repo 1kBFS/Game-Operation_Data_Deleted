@@ -64,6 +64,8 @@ namespace WeaponNS {
 
         void setRoundType(int roundType);
 
+        std::string toString() const override;
+
         [[nodiscard]] ItemNS::ItemType GetType() const override;
 
     private:

@@ -104,11 +104,11 @@ void LevelNS::Cell::setType(LevelNS::CellType type) {
     Type_ = type;
 }
 
-std::vector<ItemNS::Item *> LevelNS::Cell::show_items_ground() {
+std::vector<const ItemNS::Item *> LevelNS::Cell::show_items_ground() const{
     return ItemsGround_.show_items();
 }
 
-std::vector<ItemNS::Item *> LevelNS::Cell::show_items_container() {
+std::vector<const ItemNS::Item *> LevelNS::Cell::show_items_container() const{
     return ItemsContainer_.show_items();
 }
 
@@ -130,8 +130,18 @@ InventoryNS::Inventory *LevelNS::Cell::get_inventory_ground() {
     return &ItemsGround_;
 }
 
-InventoryNS::Inventory *LevelNS::Cell::get_inventory_container() {
+InventoryNS::Inventory *LevelNS::Cell::get_inventory_container(){
     return &ItemsContainer_;
 }
+
+LevelNS::Cell::const_CellEntitiesIterator LevelNS::Cell::begin() const {
+    return Entities_.begin();
+}
+
+LevelNS::Cell::const_CellEntitiesIterator LevelNS::Cell::end() const {
+    return Entities_.end();
+}
+
+
 
 

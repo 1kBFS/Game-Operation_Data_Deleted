@@ -12,6 +12,7 @@ namespace FirstAidKitNS {
                                                                                                                 usageTime),
                                                                                                         HeatPointBoost_(
                                                                                                                 heatPointBoost) {}
+
     int FirstAidKit::getUsageTime() const {
         return UsageTime_;
     }
@@ -30,5 +31,15 @@ namespace FirstAidKitNS {
 
     ItemNS::ItemType FirstAidKit::GetType() const {
         return ItemNS::AID_KIT;
+    }
+
+    std::string FirstAidKit::toString() const {
+        std::string out;
+        out += "----First AID kit----\n";
+        out += "Name: " + this->GetTitle() + "\n";
+        out += "Weight: " + std::to_string(this->getWeight()) + "\n";
+        out += "Usage Time: " + std::to_string(this->UsageTime_) + "\n";
+        out += "Boost: " + std::to_string(this->HeatPointBoost_) + "\n";
+        return out;
     }
 } // FirstAidKitNS

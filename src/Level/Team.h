@@ -38,7 +38,7 @@ namespace TeamNS {
          * @param entity_to_find юнит для поиска.
          * @return итератор на позицию.
          */
-        TeamIterator find(std::shared_ptr<EntityNS::Entity> &entity_to_find);
+        TeamIterator find(const std::shared_ptr<EntityNS::Entity> &entity_to_find);
 
         [[nodiscard]] int getSize() const;
 

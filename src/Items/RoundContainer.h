@@ -45,6 +45,8 @@ namespace RoundNS {
 
         [[nodiscard]] ItemNS::ItemType GetType() const override;
 
+        std::string toString() const override;
+
     private:
         int RoundType_;
         int Capacity_;

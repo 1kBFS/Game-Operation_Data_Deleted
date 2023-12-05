@@ -32,6 +32,8 @@ namespace FirstAidKitNS {
 
         [[nodiscard]] ItemNS::ItemType GetType() const override;
 
+        [[nodiscard]] std::string toString() const override;
+
     private:
         int UsageTime_;
         int HeatPointBoost_;

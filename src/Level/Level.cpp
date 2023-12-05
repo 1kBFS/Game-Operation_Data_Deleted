@@ -107,14 +107,14 @@ namespace LevelNS {
         Board_[pos.first][pos.second].remove_item_container(index);
     }
 
-    std::vector<ItemNS::Item *> Level::show_items_ground(std::pair<int, int> pos) {
+    std::vector<const ItemNS::Item *> Level::show_items_ground(std::pair<int, int> pos) const {
         if (!check_coords(pos)) {
             throw std::out_of_range("Invalid coords");
         }
         return Board_[pos.first][pos.second].show_items_ground();
     }
 
-    std::vector<ItemNS::Item *> Level::show_items_container(std::pair<int, int> pos) {
+    std::vector<const ItemNS::Item *> Level::show_items_container(std::pair<int, int> pos) const {
         if (!check_coords(pos)) {
             throw std::out_of_range("Invalid coords");
         }
@@ -209,12 +209,13 @@ namespace LevelNS {
                 cnt++;
             }
         }
-        return (cnt >= cells.size() - 1);
+        auto [end_i, end_j] = cells[0];
+        return (cnt == cells.size() || (cnt == (cells.size() - 1) && !checker(Board_[end_i][end_j])));
     }
 
     std::vector<std::shared_ptr<EntityNS::Entity>>
     Level::find_enemy(std::shared_ptr<EntityNS::Entity> &my_entity, TeamNS::Team &my_team,
-                      std::vector<std::pair<int, int>> &visiably_cells) {
+                      std::vector<std::pair<int, int>> &visiably_cells) const {
         std::vector<std::shared_ptr<EntityNS::Entity>> result;
         for (auto &[i, j]: visiably_cells) {
             auto &cell = Board_[i][j];
@@ -227,7 +228,7 @@ namespace LevelNS {
         return result;
     }
 
-    std::vector<std::pair<int, int>> Level::find_container() {
+    std::vector<std::pair<int, int>> Level::find_container() const {
         std::vector<std::pair<int, int>> result;
         for (size_t i = 0; i < Board_.size(); i++) {
             for (size_t j = 0; j < Board_[0].size(); j++) {

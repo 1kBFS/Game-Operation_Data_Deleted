@@ -131,6 +131,10 @@ namespace EntityNS {
 
         [[nodiscard]] int getCurrentWeight() const;
 
+        [[nodiscard]] std::vector<const ItemNS::Item *> show_inventory() const;
+
+        std::string toString() const override;
+
     private:
 
         std::unique_ptr<WeaponNS::Weapon> ActiveWeapon_;

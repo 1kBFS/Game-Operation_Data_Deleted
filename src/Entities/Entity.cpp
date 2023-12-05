@@ -67,12 +67,12 @@ namespace EntityNS {
         VisibilityRadius_ = visibilityRadius;
     }
 
-    void Entity::reset_time(){
+    void Entity::reset_time() {
         curTime_ = AvaliableTime_;
     }
 
     void Entity::decrease_hp(int amount) {
-        curHeatPoint_ = std::max(curHeatPoint_-amount, 0);
+        curHeatPoint_ = std::max(curHeatPoint_ - amount, 0);
     }
 
     std::pair<int, int> Entity::getPos() const {
@@ -82,6 +82,10 @@ namespace EntityNS {
     void Entity::setPos(std::pair<int, int> pos) {
         i = pos.first;
         j = pos.second;
+    }
+
+    bool Entity::checkDist(std::pair<int, int> first, std::pair<int, int> second, int R) {
+        return (abs(first.first - second.first) + abs(first.second - second.second) <= R);
     }
 
 

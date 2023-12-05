@@ -18,7 +18,7 @@ namespace EntityNS {
         }
         i = new_i;
         j = new_j;
-        curTime_-=StepTime_;
+        curTime_ -= StepTime_;
     }
 
     std::optional<InventoryNS::Inventory> IntelligentCreature::die() {
@@ -38,16 +38,20 @@ namespace EntityNS {
         if (ActiveWeapon_ == nullptr) {
             throw std::runtime_error("No active weapon is chosen.");
         }
-        if (curTime_ < ActiveWeapon_->getShotTime()){
+        if (curTime_ < ActiveWeapon_->getShotTime()) {
             throw std::runtime_error("Too little time to perform the operation.");
         }
+        if (!checkDist(enemy.getPos(), getPos(), VisibilityRadius_)) {
+            throw std::runtime_error("Unit too far to shot.");
+        }
         int success_probability = rand() % 100 + 1;
+        auto damage = ActiveWeapon_->shot();
         if (success_probability <= Accuracy_) {
-            enemy.decrease_hp(ActiveWeapon_->shot());
-            curTime_-=ActiveWeapon_->getShotTime();
+            enemy.decrease_hp(damage);
+            curTime_ -= ActiveWeapon_->getShotTime();
             return true;
         }
-        curTime_-=ActiveWeapon_->getShotTime();
+        curTime_ -= ActiveWeapon_->getShotTime();
         return false;
     }
 
@@ -77,11 +81,11 @@ namespace EntityNS {
         if (index >= inventory.getSize() || index < 0) {
             throw std::out_of_range("Invalid index.");
         }
-        auto& tempPtr = *(inventory.begin()+index);
-        if (tempPtr->GetType() != ItemNS::WEAPON){
+        auto &tempPtr = *(inventory.begin() + index);
+        if (tempPtr->GetType() != ItemNS::WEAPON) {
             throw std::invalid_argument("No weapon under given index.");
         }
-        auto required_itemPtr = inventory.throw_item(inventory.begin()+index).release();
+        auto required_itemPtr = inventory.throw_item(inventory.begin() + index).release();
         std::unique_ptr<WeaponNS::Weapon> to_unit;
         auto required_itemPtr_casted = dynamic_cast<WeaponNS::Weapon *>(required_itemPtr);
         to_unit.reset(required_itemPtr_casted);
@@ -91,6 +95,25 @@ namespace EntityNS {
 
     IntelligentCreature::IntelligentCreature(const std::string &name, int accuracy) : Entity(name),
                                                                                       Accuracy_(accuracy) {}
+
+    ItemNS::Item *IntelligentCreature::getActiveWeapon() const {
+        return ActiveWeapon_.get();
+    }
+
+    std::string IntelligentCreature::toString() const {
+        std::string out;
+        out += "----Intelligent Creature----\n";
+        out += "Name: " + Name_ + "\n";
+        out += "Step time: " + std::to_string(StepTime_) + "\n";
+        out += "Visibility Radius: " + std::to_string(VisibilityRadius_) + "\n";
+        out += "Accuracy: " + std::to_string(Accuracy_) + "\n";
+        if (ActiveWeapon_) {
+            out += ActiveWeapon_->toString();
+        } else {
+            out += "No weapon in the hands\n";
+        }
+        return out;
+    }
 
 
 } // EntityNS

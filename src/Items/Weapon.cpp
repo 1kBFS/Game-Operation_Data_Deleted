@@ -9,11 +9,12 @@ namespace WeaponNS {
         return Damage_;
     }
 
-    Weapon::Weapon(const std::string &title, int roundType, int weight, int magazineSize, int damage, int shotTime, int reloadTime,
+    Weapon::Weapon(const std::string &title, int roundType, int weight, int magazineSize, int damage, int shotTime,
+                   int reloadTime,
                    int magazineCapacity) : Item(title, weight), Damage_(damage), ShotTime_(shotTime),
-                                                              ReloadTime_(reloadTime), MagazineSize_(magazineSize),
-                                                              MagazineCapacity_(magazineCapacity),
-                                                              RoundType_(roundType) {}
+                                           ReloadTime_(reloadTime), MagazineSize_(magazineSize),
+                                           MagazineCapacity_(magazineCapacity),
+                                           RoundType_(roundType) {}
 
     int Weapon::getShotTime() const {
         return ShotTime_;
@@ -59,14 +60,26 @@ namespace WeaponNS {
         if (container.getRoundType() != RoundType_) {
             throw std::runtime_error("Invalid container type. Rounds are different.");
         }
-        MagazineSize_+=container.extract(MagazineCapacity_ - MagazineSize_);
+        MagazineSize_ += container.extract(MagazineCapacity_ - MagazineSize_);
     }
 
     int Weapon::shot() {
         if (MagazineSize_ <= 0) {
             throw std::runtime_error("Weapon magazine is empty");
         }
-        MagazineSize_-=1;
+        MagazineSize_ -= 1;
         return Damage_;
+    }
+
+    std::string Weapon::toString() const {
+        std::string out;
+        out += "----Weapon----\n";
+        out += "Name: " + this->GetTitle() + "\n";
+        out += "Weight: " + std::to_string(this->getWeight()) + "\n";
+        out += "Round Type: " + std::to_string(this->RoundType_) + "\n";
+        out += "Ammo: " + std::to_string(this->MagazineSize_) + "/" + std::to_string(this->MagazineCapacity_) + "\n";
+        out += "Reload time: " + std::to_string(ReloadTime_) + "\n";
+        out += "Shot time: " + std::to_string(ShotTime_) + "\n";
+        return out;
     }
 } // WeaponNS

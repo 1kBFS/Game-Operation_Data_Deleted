@@ -79,8 +79,8 @@ namespace InventoryNS {
         return ptr;
     }
 
-    std::vector<ItemNS::Item *> Inventory::show_items() {
-        std::vector<ItemNS::Item *> result;
+    std::vector<const ItemNS::Item *> Inventory::show_items() const {
+        std::vector<const ItemNS::Item *> result;
         for (auto &el: Elements_) {
             result.push_back(el.get());
         }
