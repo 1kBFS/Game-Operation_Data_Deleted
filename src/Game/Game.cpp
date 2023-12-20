@@ -392,5 +392,9 @@ namespace GameNS {
         return true;
     }
 
+    void Game::attack(std::shared_ptr<EntityNS::Entity> &enemy) {
+        this->shot(enemy->getPos(), enemy);
+    }
+
 
 } // GameNS

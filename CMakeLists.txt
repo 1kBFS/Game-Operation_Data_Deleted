@@ -2,15 +2,21 @@ cmake_minimum_required(VERSION 3.18)
 project(Lab3)
 
 set(CMAKE_CXX_STANDARD 20)
-
-#add_executable(Lab3 main.cpp Item.cpp Item.h Weapon.cpp Weapon.h RoundContainer.cpp RoundContainer.h FirstAidKit.cpp FirstAidKit.h Inventory.cpp Inventory.h Entity.cpp Entity.h Matrix.cpp Matrix.h Level.cpp Level.h Team.cpp Team.h Cell.cpp Cell.h Operative.cpp Operative.h Wild_Creature.cpp Wild_Creature.h Intelligent_Creature.cpp Intelligent_Creature.h Forager.cpp Forager.h Game.cpp Game.h tests/TestCases.cpp tests/catch.hpp)
-#add_executable(Lab3 tests/TestCases.cpp Items/Item.h Items/Item.cpp tests/catch.hpp Items/RoundContainer.cpp Items/RoundContainer.h Items/FirstAidKit.h Items/FirstAidKit.cpp Items/Weapon.cpp Items/Weapon.h
-#        Items/Inventory.h Items/Inventory.cpp Entities/Entity.h Entities/Entity.cpp Entities/Operative.h Entities/Operative.cpp Entities/Wild_Creature.h Entities/Wild_Creature.cpp Entities/Intelligent_Creature.cpp Entities/Intelligent_Creature.h Entities/Forager.h Entities/Forager.cpp
-#        Level/Team.h Level/Team.cpp Level/Cell.h Level/Cell.cpp Level/Level.h Level/Level.cpp Game/Game.h Game/Game.cpp)
-
-add_executable(Lab3 main.cpp src/Items/Item.h src/Items/Item.cpp src/Items/RoundContainer.cpp src/Items/RoundContainer.h src/Items/FirstAidKit.h src/Items/FirstAidKit.cpp src/Items/Weapon.cpp src/Items/Weapon.h
+add_compile_options(-fprofile-arcs -ftest-coverage)
+link_libraries(gcov)
+add_executable(Lab3 tests/TestCases.cpp src/Items/Item.h src/Items/Item.cpp src/Items/RoundContainer.cpp src/Items/RoundContainer.h src/Items/FirstAidKit.h src/Items/FirstAidKit.cpp src/Items/Weapon.cpp src/Items/Weapon.h
         src/Items/Inventory.h src/Items/Inventory.cpp src/Entities/Entity.h src/Entities/Entity.cpp src/Entities/Operative.h src/Entities/Operative.cpp src/Entities/Wild_Creature.h src/Entities/Wild_Creature.cpp src/Entities/Intelligent_Creature.cpp src/Entities/Intelligent_Creature.h src/Entities/Forager.h src/Entities/Forager.cpp
-        src/Level/Team.h src/Level/Team.cpp src/Level/Cell.h src/Level/Cell.cpp src/Level/Level.h src/Level/Level.cpp src/Game/Game.h src/Game/Game.cpp src/UI/Game_Controller.cpp src/UI/Game_Controller.h src/UI/Tile_Map.cpp src/UI/Tile_Map.h)
-find_package(SFML 2.5 COMPONENTS graphics audio REQUIRED)
-find_package(TGUI 1 REQUIRED)
-target_link_libraries(Lab3 sfml-graphics sfml-audio TGUI::TGUI)
+        src/Level/Team.h src/Level/Team.cpp src/Level/Cell.h src/Level/Cell.cpp src/Level/Level.h src/Level/Level.cpp src/Game/Game.h src/Game/Game.cpp)
+
+#add_executable(Lab3 main.cpp src/Items/Item.h src/Items/Item.cpp src/Items/RoundContainer.cpp src/Items/RoundContainer.h src/Items/FirstAidKit.h src/Items/FirstAidKit.cpp src/Items/Weapon.cpp src/Items/Weapon.h
+#        src/Items/Inventory.h src/Items/Inventory.cpp src/Entities/Entity.h src/Entities/Entity.cpp src/Entities/Operative.h src/Entities/Operative.cpp src/Entities/Wild_Creature.h src/Entities/Wild_Creature.cpp src/Entities/Intelligent_Creature.cpp src/Entities/Intelligent_Creature.h src/Entities/Forager.h src/Entities/Forager.cpp
+#        src/Level/Team.h src/Level/Team.cpp src/Level/Cell.h src/Level/Cell.cpp src/Level/Level.h src/Level/Level.cpp src/Game/Game.h src/Game/Game.cpp src/UI/Game_Controller.cpp src/UI/Game_Controller.h src/UI/Tile_Map.cpp src/UI/Tile_Map.h)
+#find_package(SFML 2.5 COMPONENTS graphics audio REQUIRED)
+#find_package(TGUI 1 REQUIRED)
+#target_link_libraries(Lab3 sfml-graphics sfml-audio TGUI::TGUI)
+
+set(CMAKE_TOOLCHAIN_FILE "/home/pavel/vcpkg/scripts/buildsystems/vcpkg.cmake"
+        CACHE STRING "Vcpkg toolchain file")
+find_package(Catch2 3 REQUIRED)
+target_link_libraries(Lab3 PRIVATE Catch2::Catch2WithMain)
+

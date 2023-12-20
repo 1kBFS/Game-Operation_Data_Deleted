@@ -139,7 +139,7 @@ namespace LevelNS {
          * @return true - является.
          */
         static bool isVisiable(const Cell &cell) {
-            return cell.Type_ == WINDOW || cell.Type_ == FLOOR;
+            return cell.Type_ == WINDOW || cell.Type_ == FLOOR || cell.Type_==CONTAINER;
         }
         static bool isEmpty(const Cell &cell) {
             return cell.Type_ == FLOOR;

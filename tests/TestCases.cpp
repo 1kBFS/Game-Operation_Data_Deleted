@@ -1,23 +1,23 @@
 //
 // Created by Pavel on 06.11.2023.
 //
-#define CATCH_CONFIG_MAIN
 
-#include "../Items/RoundContainer.h"
-#include "../Items/FirstAidKit.h"
-#include "../Items/Weapon.h"
-#include "../Items/Inventory.h"
+#include <catch2/catch_test_macros.hpp>
+#include "../src/Items/RoundContainer.h"
+#include "../src/Items/FirstAidKit.h"
+#include "../src/Items/Weapon.h"
+#include "../src/Items/Inventory.h"
 
-#include "../Entities/Operative.h"
-#include "../Entities/Wild_Creature.h"
-#include "../Entities/Intelligent_Creature.h"
-#include "../Entities/Forager.h"
+#include "../src/Entities/Operative.h"
+#include "../src/Entities/Wild_Creature.h"
+#include "../src/Entities/Intelligent_Creature.h"
+#include "../src/Entities/Forager.h"
 
-#include "../Game/Game.h"
-#include "../Level/Team.h"
-#include "../Level/Level.h"
+#include "../src/Game/Game.h"
+#include "../src/Level/Team.h"
+#include "../src/Level/Level.h"
 
-#include "catch.hpp"
+
 #include <memory>
 
 template<typename T>
@@ -311,6 +311,7 @@ TEST_CASE("GAME") {
     InventoryNS::Inventory loaded_inventory_unit;
     loaded_inventory_unit.push_back(std::make_unique<WeaponNS::Weapon>("AK-47", 1, 1, 1));
     operative_unit->setInvetnory(std::move(loaded_inventory_unit));
+    operative_unit->setAccuracy(100);
     A.push_back(std::move(operative_unit));
 
     auto creature_unit = std::make_shared<EntityNS::Forager>("default");
@@ -328,20 +329,18 @@ TEST_CASE("GAME") {
     // Game process
     GameNS::Game game(3, std::move(teams));
     // game tick
-    auto visiably = game.update_visibility();
+    auto visiably = game.getVisibleCells();
     auto enemies = game.find_enemy(visiably);
-    game.change_weapon(0);
+    game.use(0);
     // game tick
-    visiably = game.update_visibility();
     enemies = game.find_enemy(visiably);
     auto it = enemies.begin();
-    game.shot((*it)->getPos(), (*it));
+    game.attack (*it);
     // game tick
-    visiably = game.update_visibility();
     enemies = game.find_enemy(visiably);
-    game.move({1, 0});
+    auto temp = GameNS::Game::MoveDirectionType::DOWN;
+    game.move_direction(temp);
     // game tick
-    visiably = game.update_visibility();
     enemies = game.find_enemy(visiably);
     auto items = game.show_items_ground();
     REQUIRE(items.size() == 1);

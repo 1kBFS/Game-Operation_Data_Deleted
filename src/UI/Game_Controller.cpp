@@ -20,7 +20,8 @@ UI::GameController::GameController(const std::string &config_filename, std::shar
     TeamNS::Team B("Creatures");
     auto operative_unit = std::make_shared<EntityNS::Operative>("default");
     operative_unit->setCurTime(10);
-    operative_unit->setVisibilityRadius(1);
+    operative_unit->setAvaliableTime(10);
+    operative_unit->setVisibilityRadius(2);
     WeaponNS::Weapon first_active_weapon("AK-47", 1, 5, 4);
     operative_unit->setActiveWeapon(first_active_weapon);
     InventoryNS::Inventory loaded_inventory_unit;
@@ -28,30 +29,38 @@ UI::GameController::GameController(const std::string &config_filename, std::shar
     loaded_inventory_unit.push_back(std::make_unique<RoundNS::RoundContainer>("Ak-47 ammo", 1, 10, 7));
     loaded_inventory_unit.push_back(std::make_unique<WeaponNS::Weapon>("AK-47", 1, 1, 5));
     operative_unit->setInvetnory(std::move(loaded_inventory_unit));
-    auto wild = std::make_shared<EntityNS::IntelligentCreature>("wild A");
-    wild->setPos({2, 2});
-    wild->setCurTime(10);
-    wild->setAvaliableTime(100);
+    auto intelligentCreature = std::make_shared<EntityNS::IntelligentCreature>("wild A");
+    intelligentCreature->setPos({2, 2});
+    intelligentCreature->setCurTime(10);
+    intelligentCreature->setAvaliableTime(5);
+    intelligentCreature->setVisibilityRadius(1);
+    B.push_back(std::move(operative_unit));
+    auto wild = std::make_shared<EntityNS::WildCreature>("wild B");
     wild->setVisibilityRadius(1);
-    A.push_back(std::move(operative_unit));
+    wild->setCurTime(4);
+    wild->setAvaliableTime(5);
+    wild->setPos({3, 3});
     A.push_back(std::move(wild));
 
     auto creature_unit = std::make_shared<EntityNS::Forager>("default");
     creature_unit->setCurHeatPoint(2);
     creature_unit->setAvaliableTime(3);
-    creature_unit->setPos({2, 0});
+    creature_unit->setCurTime(3);
+    creature_unit->setVisibilityRadius(1);
+    creature_unit->setPos({1, 2});
     InventoryNS::Inventory loaded_inventory_creature;
     loaded_inventory_creature.push_back(std::make_unique<WeaponNS::Weapon>("MP4-A1", 1, 1, 1));
     loaded_inventory_creature.push_back(std::make_unique<FirstAidKitNS::FirstAidKit>("AID", 1, 1, 5));
     creature_unit->setInvetnory(std::move(loaded_inventory_creature));
-    B.push_back(std::move(creature_unit));
+    A.push_back(std::move(creature_unit));
+    A.push_back(std::move(intelligentCreature));
     std::vector<TeamNS::Team> teams;
     teams.push_back(std::move(A));
     teams.push_back(std::move(B));
-    GameNS::Game temp(3, std::move(teams));
-    ScaleX_ = 10.0 / 3;
-    ScaleY = 10.0 / 3;
-    TileMap temp_map("../models/texture.png", sf::Vector2u(64, 64), 3, 3);
+    GameNS::Game temp(4, std::move(teams));
+    ScaleX_ = 10.0 / 4;
+    ScaleY = 10.0 / 4;
+    TileMap temp_map("../models/texture.png", sf::Vector2u(64, 64), 4, 4);
     SpriteTexture_.loadFromFile("../models/units.png");
     ActiveUnitSprite_.setTexture(SpriteTexture_);
     Game_ = std::move(temp);
@@ -241,7 +250,7 @@ void UI::GameController::attack_handler(float mouse_x, float mouse_y) {
     for (auto &unit: EnemySprite_) {
         if (unit.first.getGlobalBounds().contains(mouse_x, mouse_y)) {
             try {
-                Game_.shot(unit.second->getPos(), unit.second);
+                Game_.attack(unit.second);
             } catch (std::exception &exception) {
                 message_box(exception.what());
             }

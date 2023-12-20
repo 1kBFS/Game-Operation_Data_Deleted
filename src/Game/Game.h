@@ -28,8 +28,6 @@ namespace GameNS {
 
         void move_direction(MoveDirectionType &direction);
 
-        void shot(std::pair<int, int> attack_pos, std::shared_ptr<EntityNS::Entity> &enemy);
-
         void use(int index);
 
         void take_item_ground(int index);
@@ -40,6 +38,7 @@ namespace GameNS {
 
         void throw_item_container(int index = 0);
 
+        void attack(std::shared_ptr<EntityNS::Entity> &enemy);
         [[nodiscard]] std::vector<const ItemNS::Item *> show_items_ground() const;
 
         [[nodiscard]] std::vector<const ItemNS::Item *> show_items_container() const;
@@ -89,6 +88,8 @@ namespace GameNS {
         void use_aid(int index);
 
         void change_weapon(int index);
+
+        void shot(std::pair<int, int> attack_pos, std::shared_ptr<EntityNS::Entity> &enemy);
 
         void reset_time();
 
