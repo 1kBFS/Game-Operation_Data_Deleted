@@ -17,6 +17,10 @@
 #include "../src/Level/Team.h"
 #include "../src/Level/Level.h"
 
+#include "../src/Matrix/MyMatrix.h"
+
+using namespace std::chrono;
+using namespace MatrixNS;
 
 #include <memory>
 
@@ -400,5 +404,139 @@ TEST_CASE("GAME") {
     REQUIRE(items_in_player_inventory.empty());
     auto isGameOver = game.next_team();
     REQUIRE(isGameOver == true);
+
+}
+
+
+TEST_CASE("C-tors", "[MyMatrix]") {
+    SECTION("ctor by rows and columns") {
+        MyMatrix<int> matrix(3, 2);
+        REQUIRE(matrix.getRowCount() == 3);
+        REQUIRE(matrix.getColumnCount() == 2);
+    }SECTION("ctor for squared matrix") {
+        MyMatrix<int> matrix(3);
+        REQUIRE(matrix.getRowCount() == 3);
+        REQUIRE(matrix.getColumnCount() == 3);
+    }SECTION("copy ctor") {
+        MyMatrix<int> matrix(3);
+        MyMatrix<int> new_matrix = matrix;
+        REQUIRE(new_matrix.getRowCount() == 3);
+        REQUIRE(new_matrix.getColumnCount() == 3);
+    } SECTION("move ctor") {
+        MyMatrix<int> matrix(3);
+        MyMatrix<int> new_matrix = std::move(matrix);
+        REQUIRE(new_matrix.getRowCount() == 3);
+        REQUIRE(new_matrix.getColumnCount() == 3);
+        REQUIRE(matrix.getColumnCount() == 0);
+        REQUIRE(matrix.getRowCount() == 0);
+    }
+
+}
+
+TEST_CASE("Operators", "[MyMatrix]") {
+    SECTION("Copy assigment operator.") {
+        MyMatrix<int> matrix(2, 5);
+        MyMatrix<int> new_matrix(10, 10);
+        matrix = new_matrix;
+        REQUIRE(matrix.getColumnCount() == 10);
+        REQUIRE(matrix.getRowCount() == 10);
+    }SECTION("Move assigment operator") {
+        MyMatrix<int> matrix(2, 5);
+        MyMatrix<int> new_matrix(10, 10);
+        matrix = std::move(new_matrix);
+        REQUIRE(matrix.getColumnCount() == 10);
+        REQUIRE(matrix.getRowCount() == 10);
+        REQUIRE(new_matrix.getColumnCount() == 0);
+        REQUIRE(new_matrix.getRowCount() == 0);
+    } SECTION("[] operator for non-const matrix") {
+        MyMatrix<int> matrix(2, 5);
+        matrix[0][1] = 1;
+        REQUIRE(matrix[0][1] == 1);
+        MyMatrix<int> new_matrix = matrix;
+        REQUIRE(new_matrix[0][1] == 1);
+    } SECTION("[] operator for const matrix") {
+        const MyMatrix<int> matrix(2, 5);
+        // matrix[0][1] = 1; // CE
+        REQUIRE(matrix[0][1] == 0);
+    }
+}
+
+TEST_CASE("Iterators") {
+    static_assert(std::random_access_iterator<
+            MyMatrixIterator < int, true>>);
+    static_assert(std::random_access_iterator<
+            MyMatrixIterator < int, false>>);
+    MyMatrix<int> matrix(1, 3);
+    matrix[0][0] = 1;
+    matrix[0][1] = 2;
+    matrix[0][2] = 3;
+    SECTION("I++/I--") {
+        auto it = matrix.begin();
+        REQUIRE(*it == 1);
+        it++;
+        REQUIRE(*it == 2);
+        it++;
+        REQUIRE(*it == 3);
+        it--;
+        REQUIRE(*it == 2);
+        it--;
+        REQUIRE(*it == 1);
+    } SECTION("++I/--I") {
+        auto it = matrix.begin();
+        REQUIRE(*it == 1);
+        ++it;
+        REQUIRE(*it == 2);
+        ++it;
+        REQUIRE(*it == 3);
+        --it;
+        REQUIRE(*it == 2);
+        --it;
+        REQUIRE(*it == 1);
+    }SECTION("==, !=") {
+        auto it = matrix.begin();
+        it++;
+        it++;
+        REQUIRE(it != matrix.end());
+        it++;
+        REQUIRE(it == matrix.end());
+    } SECTION("<, <=, >, >=") {
+        auto it = matrix.begin();
+        auto it2 = it + 1;
+        REQUIRE(it2 > it);
+        REQUIRE(it2 >= it2);
+        REQUIRE(it < it2);
+        REQUIRE(it2 <= it2);
+    } SECTION("+=, -=") {
+        auto it = matrix.begin();
+        it += 2;
+        REQUIRE(*it == 3);
+        it -= 1;
+        REQUIRE(*it == 2);
+    } SECTION("*") {
+        auto it = matrix.begin();
+        *it = 1111;
+        REQUIRE(matrix[0][0] == 1111);
+    } SECTION("distance") {
+        auto dist = std::distance(matrix.begin(), matrix.begin() + 2);
+        REQUIRE(dist == 2);
+    }
+}
+
+TEST_CASE("Multithreading") {
+    MyMatrix<int> matrix(10000);
+    matrix[9999][9999] = 7;
+    matrix[3000][0] = 1;
+    matrix[5000][5001] = 3;
+    auto is_odd = [](int i) { return i % 2 != 0; };
+    SECTION("One thread find"){
+        auto result = matrix.oneThreadFind(matrix.begin(), matrix.end(), is_odd);
+        REQUIRE(*result.first == 1);
+        REQUIRE(result.second == std::make_pair(3000, 0));
+    }
+    SECTION("Multithread find") {
+        auto result = matrix.oneThreadFind(matrix.begin(), matrix.end(), is_odd);
+        REQUIRE(*result.first == 1);
+        REQUIRE(result.second == std::make_pair(3000, 0));
+    }
 
 }
