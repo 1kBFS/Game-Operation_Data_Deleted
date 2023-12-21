@@ -347,6 +347,9 @@ namespace GameNS {
                 auto ptr_foo = dynamic_cast<EntityNS::Forager *>((*ActivePlayer_).get());
                 ptr_item = ptr_foo->item_to_use(index);
             }
+            if (!ptr_item) {
+                throw std::runtime_error("Invalid index");
+            }
             switch (ptr_item->GetType()) {
 
                 case ItemNS::WEAPON:

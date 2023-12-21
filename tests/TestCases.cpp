@@ -45,13 +45,18 @@ TEST_CASE("RoundContainer") {
 
 TEST_CASE("FirstAidKit") {
     FirstAidKitNS::FirstAidKit aid("Йод", 1, 2, 25);
+    aid.setHeatPointBoost(5);
+    aid.setUsageTime(100);
     REQUIRE(aid.GetType() == ItemNS::ItemType::AID_KIT);
     REQUIRE(aid.GetTitle() == "Йод");
-    REQUIRE(aid.getHeatPointBoost() == 25);
+    REQUIRE(aid.getHeatPointBoost() == 5);
+    REQUIRE(aid.getUsageTime() == 100);
 }
 
 TEST_CASE("Weapon") {
-    WeaponNS::Weapon weapon("AK-47", 5);
+    WeaponNS::Weapon weapon("AK-47", 5), weapon_useless("AK-47-1", 1);
+    weapon_useless.setDamage(100);
+    REQUIRE(weapon_useless.getDamage() == 100);
     REQUIRE(weapon.GetTitle() == "AK-47");
     REQUIRE(weapon.GetType() == ItemNS::ItemType::WEAPON);
     RoundNS::RoundContainer container_good("AK-47 bullets", 5, 20);
@@ -59,7 +64,6 @@ TEST_CASE("Weapon") {
     RoundNS::RoundContainer container_bad("M4A4 bullets", 0, 20);
 
     REQUIRE(weapon.getMagazineSize() == 0);
-
     REQUIRE_THROWS(weapon.reload(container_bad));
     REQUIRE_THROWS(weapon.reload(container_low));
     REQUIRE(weapon.getMagazineSize() == 0);
@@ -278,6 +282,27 @@ TEST_CASE("INTELLIGENT_CREATURE") {
 
 }
 
+TEST_CASE("FORAGER") {
+    EntityNS::Forager foorager("simple Forager");
+    foorager.setCurTime(10);
+    REQUIRE(foorager.getCurTime() == 10);
+
+    REQUIRE(foorager.getType() == EntityNS::FORAGER);
+    InventoryNS::Inventory init_inventory;
+    init_inventory.push_back(std::make_unique<WeaponNS::Weapon>("M4A4-1", 1, 4));
+    // take item
+    foorager.take_item(init_inventory, 0);
+    REQUIRE((*foorager.item_to_use(0)).GetType() == ItemNS::ItemType::WEAPON);
+    // throw item
+    auto item = foorager.throw_item(0);
+    REQUIRE(item->GetType() == ItemNS::ItemType::WEAPON);
+    // move
+    REQUIRE_THROWS(foorager.move(1, 1)); // incorrect move
+    foorager.move(0, 1);
+    REQUIRE(foorager.getPos() == std::make_pair(0, 1));
+
+}
+
 TEST_CASE("LEVEL") {
     LevelNS::Level level(3);
     auto points = LevelNS::Level::getCellsOnLine({0, 0}, {2, 1});
@@ -300,6 +325,15 @@ TEST_CASE("LEVEL") {
     auto ptr = level.get_inventory_container({0, 0});
     REQUIRE(ptr->getCurWeight() == 0);
 
+    // place and remove item
+    std::unique_ptr<FirstAidKitNS::FirstAidKit> ptr_item = std::make_unique<FirstAidKitNS::FirstAidKit>(
+            "Medical support");
+    FirstAidKitNS::FirstAidKit *ptr_checker = ptr_item.get();
+    level.place_item_ground({0, 0}, std::move(ptr_item));
+    auto item = level.take_item_ground({0, 0}, 0);
+    REQUIRE(ptr_checker == item.get());
+    REQUIRE_THROWS(level.place_item_container({0, 0}, std::move(item)));
+
 }
 
 TEST_CASE("GAME") {
@@ -308,6 +342,7 @@ TEST_CASE("GAME") {
     TeamNS::Team B("Creatures");
     auto operative_unit = std::make_shared<EntityNS::Operative>("default");
     operative_unit->setAvaliableTime(10);
+    operative_unit->setCurHeatPoint(10);
     InventoryNS::Inventory loaded_inventory_unit;
     loaded_inventory_unit.push_back(std::make_unique<WeaponNS::Weapon>("AK-47", 1, 1, 1));
     operative_unit->setInvetnory(std::move(loaded_inventory_unit));
@@ -320,6 +355,9 @@ TEST_CASE("GAME") {
     creature_unit->setPos({1, 0});
     InventoryNS::Inventory loaded_inventory_creature;
     loaded_inventory_creature.push_back(std::make_unique<WeaponNS::Weapon>("MP4-A1", 1, 1, 1));
+    loaded_inventory_creature.push_back(std::make_unique<FirstAidKitNS::FirstAidKit>(
+            "Medical support"));
+    loaded_inventory_creature.push_back(std::make_unique<RoundNS::RoundContainer>("AK-47 ammo", 1, 1));
     creature_unit->setInvetnory(std::move(loaded_inventory_creature));
     B.push_back(std::move(creature_unit));
     std::vector<TeamNS::Team> teams;
@@ -335,15 +373,32 @@ TEST_CASE("GAME") {
     // game tick
     enemies = game.find_enemy(visiably);
     auto it = enemies.begin();
-    game.attack (*it);
+    game.attack(*it);
     // game tick
-    enemies = game.find_enemy(visiably);
     auto temp = GameNS::Game::MoveDirectionType::DOWN;
     game.move_direction(temp);
     // game tick
-    enemies = game.find_enemy(visiably);
     auto items = game.show_items_ground();
-    REQUIRE(items.size() == 1);
+    REQUIRE(items.size() == 3);
     REQUIRE(items[0]->GetTitle() == "MP4-A1");
+    REQUIRE(items[1]->GetTitle() == "Medical support");
+    REQUIRE(items[2]->GetTitle() == "AK-47 ammo");
+    // Take aid,container with ammo from ground and use them
+
+    game.take_item_ground(1); // take aid
+    game.take_item_ground(1); // take round container
+    int health_before_use = game.getActivePlayerHealth().first; // get Current health
+    game.use(0); // use aid
+    REQUIRE(game.getActivePlayerHealth().first == health_before_use + 25);
+    game.use(1); // use AK-47 ammo
+    game.throw_item_ground(0); // throw aid
+    game.throw_item_ground(0);
+    auto items_on_grond = game.show_items_ground();
+    REQUIRE(items_on_grond[1]->GetTitle() == "Medical support");
+    REQUIRE(items_on_grond[2]->GetTitle() == "AK-47 ammo");
+    auto items_in_player_inventory = game.show_items_player();
+    REQUIRE(items_in_player_inventory.empty());
+    auto isGameOver = game.next_team();
+    REQUIRE(isGameOver == true);
 
 }
