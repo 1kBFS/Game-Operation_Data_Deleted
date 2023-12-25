@@ -18,6 +18,10 @@ namespace UI {
 
         void reset_type(const LevelNS::CellType &new_type, const std::pair<int, int> &cell);
 
+        void add_point_of_interest(std::pair<int, int> cell, std::pair<int, int> scale);
+
+        void reset_points_of_interest();
+
         void to_default();
 
         const sf::Vector2u &getTileSize() const;
@@ -28,6 +32,9 @@ namespace UI {
             states.transform *= getTransform();
             states.texture = &TileSetTexture_;
             target.draw(Vertices_, states);
+            for (auto &point: point_of_interest) {
+                target.draw(point);
+            }
         }
 
         static int type_to_number(const LevelNS::CellType &cell_type);
@@ -38,6 +45,7 @@ namespace UI {
         sf::VertexArray Vertices_;
         sf::Texture TileSetTexture_;
         sf::Vector2u TileSize_;
+        std::vector<sf::CircleShape> point_of_interest;
     };
 }
 

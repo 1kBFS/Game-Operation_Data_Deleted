@@ -39,6 +39,7 @@ namespace GameNS {
         void throw_item_container(int index = 0);
 
         void attack(std::shared_ptr<EntityNS::Entity> &enemy);
+
         [[nodiscard]] std::vector<const ItemNS::Item *> show_items_ground() const;
 
         [[nodiscard]] std::vector<const ItemNS::Item *> show_items_container() const;
@@ -66,7 +67,9 @@ namespace GameNS {
 
         [[nodiscard]] std::string getActivePlayerDesc() const;
 
-        [[nodiscard]] std::vector<std::pair<std::pair<int, int>, EntityNS::EntityType>> getTeammates() const;
+        [[nodiscard]] std::vector<const EntityNS::Entity *> getTeammates() const;
+
+        bool isCellEmpty(std::pair<int, int> pos);
     private:
         TeamNS::Team::TeamIterator ActivePlayer_;
         std::vector<TeamNS::Team>::iterator ActiveTeam_;

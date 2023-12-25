@@ -374,11 +374,11 @@ namespace GameNS {
         --ActivePlayer_;
     }
 
-    std::vector<std::pair<std::pair<int, int>, EntityNS::EntityType>> Game::getTeammates() const {
-        std::vector<std::pair<std::pair<int, int>, EntityNS::EntityType>> result;
+    std::vector<const EntityNS::Entity *> Game::getTeammates() const {
+        std::vector<const EntityNS::Entity *> result;
         for (auto &unit: *ActiveTeam_) {
             if (unit != *ActivePlayer_) {
-                result.emplace_back(unit->getPos(), unit->getType());
+                result.emplace_back(unit.get());
             }
         }
         return result;
@@ -397,6 +397,12 @@ namespace GameNS {
 
     void Game::attack(std::shared_ptr<EntityNS::Entity> &enemy) {
         this->shot(enemy->getPos(), enemy);
+    }
+
+    bool Game::isCellEmpty(std::pair<int, int> pos) {
+        auto items_ground = CurrentLevel_.show_items_ground(pos);
+        auto items_container = CurrentLevel_.show_items_container(pos);
+        return (items_ground.empty() && items_container.empty());
     }
 
 

@@ -71,16 +71,46 @@ namespace UI {
         GameNS::Game Game_;
         sf::Texture SpriteTexture_;
         sf::Texture NextRoundButtonTexture_;
+
+        struct HealthBar : public sf::Drawable, public sf::Transformable {
+            explicit HealthBar(std::pair<int, int> data, std::pair<double, double> scale, sf::Vector2f position,
+                               sf::Color color = sf::Color::Red)
+                    : Base_(
+                    sf::RectangleShape(sf::Vector2f(24 * scale.first, 5 * scale.second))) {
+                Base_.setFillColor(sf::Color::Black);
+                Bound_ = sf::RectangleShape(
+                        sf::Vector2f(((static_cast<double>(data.first) / data.second) * 24) * scale.first,
+                                     5 * scale.second));
+                Bound_.setFillColor(color);
+                Base_.setPosition(position.x, position.y + 24 * scale.second);
+                Bound_.setPosition(position.x, position.y + 24 * scale.second);
+                std::cout << Bound_.getPosition().x << " " << Bound_.getPosition().y << "\n";
+            };
+
+            virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const {
+                states.transform *= getTransform();
+                target.draw(Base_, states);
+                target.draw(Bound_, states);
+            }
+
+            sf::RectangleShape Bound_;
+            sf::RectangleShape Base_;
+        };
+
         std::vector<std::pair<sf::Sprite, std::shared_ptr<EntityNS::Entity>>> EnemySprite_;
+        std::vector<HealthBar> EnemyHealthBarSprite_;
+
         std::vector<sf::Sprite> TeamSprite_;
+        std::vector<HealthBar> TeamHealthBarSprite_;
+
         std::shared_ptr<tgui::Gui> ptrGUI_;
         tgui::Widget::Ptr CurrentInventory_;
         tgui::Widget::Ptr CurrentUnitInfo_;
-        double ScaleX_ = 1;
-        double ScaleY = 1;
         bool AnyWarning = false;
         bool InventoryOpen = false;
-
+    protected:
+        double ScaleX_ = 1;
+        double ScaleY = 1;
     };
 }
 

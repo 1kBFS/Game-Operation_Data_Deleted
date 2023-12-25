@@ -49,7 +49,7 @@ UI::GameController::GameController(const std::string &config_filename, std::shar
     creature_unit->setVisibilityRadius(1);
     creature_unit->setPos({1, 2});
     InventoryNS::Inventory loaded_inventory_creature;
-    loaded_inventory_creature.push_back(std::make_unique<WeaponNS::Weapon>("MP4-A1", 1, 1, 1));
+    loaded_inventory_creature.push_back(std::make_unique<WeaponNS::Weapon>("MP4-A1", 1, 1, 10));
     loaded_inventory_creature.push_back(std::make_unique<FirstAidKitNS::FirstAidKit>("AID", 1, 1, 5));
     creature_unit->setInvetnory(std::move(loaded_inventory_creature));
     A.push_back(std::move(creature_unit));
@@ -57,15 +57,17 @@ UI::GameController::GameController(const std::string &config_filename, std::shar
     std::vector<TeamNS::Team> teams;
     teams.push_back(std::move(A));
     teams.push_back(std::move(B));
-    GameNS::Game temp(4, std::move(teams));
-    ScaleX_ = 10.0 / 4;
-    ScaleY = 10.0 / 4;
-    TileMap temp_map("../models/texture.png", sf::Vector2u(64, 64), 4, 4);
+    GameNS::Game temp(8, std::move(teams));
+    ScaleX_ = 10.0 / 10;
+    ScaleY = 10.0 / 10;
+    TileMap temp_map("../models/texture.png", sf::Vector2u(64, 64), 10, 10);
     SpriteTexture_.loadFromFile("../models/units.png");
     ActiveUnitSprite_.setTexture(SpriteTexture_);
     Game_ = std::move(temp);
     Board_ = std::move(temp_map);
     Game_.setCellType({1, 1}, LevelNS::WALL);
+    Game_.setCellType({5, 5}, LevelNS::WALL);
+    Game_.setCellType({5, 6}, LevelNS::BARRIER);
     Game_.setCellType({1, 0}, LevelNS::WINDOW);
     Game_.setCellType({2, 0}, LevelNS::CONTAINER);
     Board_.setScale(ScaleX_, ScaleY);
@@ -86,11 +88,13 @@ void UI::GameController::to_view(sf::RenderWindow &window) {
     update_unit_info_block();
     window.draw(Board_);
     window.draw(ActiveUnitSprite_);
-    for (auto &enemy_sprite: EnemySprite_) {
-        window.draw(enemy_sprite.first);
+    for (size_t i = 0; i < EnemySprite_.size(); i++) {
+        window.draw(EnemySprite_[i].first);
+        window.draw(EnemyHealthBarSprite_[i]);
     }
-    for (auto &friend_sprite: TeamSprite_) {
-        window.draw(friend_sprite);
+    for (size_t i = 0; i < TeamSprite_.size(); i++) {
+        window.draw(TeamSprite_[i]);
+        window.draw(TeamHealthBarSprite_[i]);
     }
     ptrGUI_->draw();
 }
@@ -131,6 +135,8 @@ void UI::GameController::update_visible_cells_sprite() {
     auto cells_to_show = Game_.getVisibleCells();
     for (auto &cell: cells_to_show) {
         Board_.reset_type(Game_.getCellType(cell), cell);
+        if (!Game_.isCellEmpty(cell))
+            Board_.add_point_of_interest(cell, {ScaleX_, ScaleY});
     }
 }
 
@@ -221,20 +227,29 @@ void UI::GameController::update_visible_units_sprite() {
     auto visible_cells = Game_.getVisibleCells();
     auto enemies = Game_.find_enemy(visible_cells);
     EnemySprite_.clear();
+    EnemyHealthBarSprite_.clear();
     TeamSprite_.clear();
+    TeamHealthBarSprite_.clear();
     for (auto &unit: enemies) {
         sf::Sprite sprite;
         sprite.setTexture(SpriteTexture_);
         update_sprite(sprite, unit->getType(), unit->getPos());
         EnemySprite_.emplace_back(sprite, unit);
+        // std::cout << sprite.getPosition().x << " " << sprite.getPosition().y << "\n";
+        EnemyHealthBarSprite_.push_back(HealthBar({unit->getCurHeatPoint(), unit->getMaxHeatPoint()}, {ScaleX_, ScaleY},
+                                                  sprite.getPosition()));
+
     }
     auto friends = Game_.getTeammates();
-    for (auto &[pos, type]: friends) {
+    for (auto &unit: friends) {
         sf::Sprite sprite;
         sprite.setTexture(SpriteTexture_);
-        update_sprite(sprite, type, pos);
+        update_sprite(sprite, unit->getType(), unit->getPos());
         TeamSprite_.emplace_back(sprite);
+        TeamHealthBarSprite_.push_back(HealthBar({unit->getCurHeatPoint(), unit->getMaxHeatPoint()}, {ScaleX_, ScaleY},
+                                                 sprite.getPosition(), sf::Color::Green));
     }
+
 
 }
 
@@ -368,10 +383,6 @@ void UI::GameController::next_round_button_callback() {
     }
 
 }
-
-
-
-
 
 
 

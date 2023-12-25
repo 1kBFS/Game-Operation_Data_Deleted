@@ -99,6 +99,22 @@ void UI::TileMap::to_default() {
             reset_type(LevelNS::FOG, {j, i});
         }
     }
+    reset_points_of_interest();
+}
+
+void UI::TileMap::add_point_of_interest(std::pair<int, int> cell, std::pair<int, int> scale) {
+    auto sprite = sf::CircleShape(3);
+    sprite.setFillColor(sf::Color::Yellow);
+    sprite.setOutlineThickness(1);
+    sprite.setOutlineColor(sf::Color::Black);
+    sprite.setPosition((cell.second)*TileSize_.x, cell.first*TileSize_.y);
+    std::cout << "POINT coords: " <<cell.first << " " << cell.second << "\n";
+    std::cout << "POINT: " << sprite.getPosition().x << " " << sprite.getPosition().y << "\n";
+    point_of_interest.push_back(sprite);
+}
+
+void UI::TileMap::reset_points_of_interest() {
+    point_of_interest.clear();
 }
 
 
