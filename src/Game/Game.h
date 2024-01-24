@@ -70,6 +70,9 @@ namespace GameNS {
         [[nodiscard]] std::vector<const EntityNS::Entity *> getTeammates() const;
 
         bool isCellEmpty(std::pair<int, int> pos);
+
+        std::pair<int, int> getLevelSize() const;
+
     private:
         TeamNS::Team::TeamIterator ActivePlayer_;
         std::vector<TeamNS::Team>::iterator ActiveTeam_;
@@ -97,6 +100,8 @@ namespace GameNS {
         void reset_time();
 
         bool checkGameOver();
+
+        friend class GameConfig;
     };
 
 } // GameNS

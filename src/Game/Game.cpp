@@ -405,5 +405,9 @@ namespace GameNS {
         return (items_ground.empty() && items_container.empty());
     }
 
+    std::pair<int, int> Game::getLevelSize() const {
+        return CurrentLevel_.getSize();
+    }
+
 
 } // GameNS

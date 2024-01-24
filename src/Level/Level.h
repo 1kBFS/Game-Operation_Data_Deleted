@@ -163,6 +163,8 @@ namespace LevelNS {
 
         explicit Level(int size = 0);
 
+        void resize(int new_width, int new_height);
+        [[nodiscard]] std::pair<int, int> getSize() const;
     private:
 
         [[nodiscard]] bool check_coords(std::pair<int, int> pos) const;

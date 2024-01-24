@@ -261,5 +261,16 @@ namespace LevelNS {
         return Board_[pos.first][pos.second].get_inventory_container();
     }
 
+    void Level::resize(int new_width, int new_height)  {
+        Board_.clear();
+        for (int i = 0; i < new_height; i++) {
+            Board_.emplace_back(new_width);
+        }
+    }
+
+    std::pair<int, int> Level::getSize() const {
+        return {Board_.size(), Board_[0].size()};
+    }
+
 
 } // LevelNS

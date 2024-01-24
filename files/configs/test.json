@@ -1,0 +1,158 @@
+{
+  "width": 5,
+  "height": 5,
+  "teams_amount": 2,
+  "Operatives": [
+    {
+      "team_number": 0,
+      "i": 0,
+      "j": 0,
+      "Name": "Commander",
+      "MaxHeatPoint": 100,
+      "CurTime": 10,
+      "AvaliableTime": 15,
+      "StepTime": 1,
+      "VisibilityRadius": 2,
+      "CurHeatPoint": 50,
+      "ReloadTime": 2,
+      "MaxWeight": 15,
+      "Accuracy": 100,
+      "ActiveWeapon": {
+        "Title": "Pistol",
+        "Weight": 1,
+        "Damage": 3,
+        "ShotTime": 1,
+        "ReloadTime": 3,
+        "MagazineSize": 10,
+        "MagazineCapacity": 10,
+        "RoundType": 2
+      },
+      "Inventory": {
+        "Aids": [
+          {
+            "Title": "Medical Support",
+            "Weight": 5,
+            "UsageTime": 7,
+            "HeatPointBoost": 25
+          }
+        ],
+        "Containers": [
+          {
+            "Title": "AK-47 ammo",
+            "Weight": 5,
+            "RoundType": 1,
+            "Capacity": 50,
+            "Size": 26
+          },
+          {
+            "Title": "pistol magazine",
+            "Weight": 1,
+            "RoundType": 2,
+            "Capacity": 10,
+            "Size": 10
+          }
+        ],
+        "Weapons": [
+          {
+            "Title": "AK-47",
+            "Weight": 3,
+            "Damage": 7,
+            "ShotTime": 2,
+            "ReloadTime": 5,
+            "MagazineSize": 10,
+            "MagazineCapacity": 10,
+            "RoundType": 1
+          }
+        ]
+      }
+    }
+
+  ],
+  "Wilds": [
+    {
+      "team_number": 1,
+      "i": 3,
+      "j": 3,
+      "Name": "Wild Creature Alex",
+      "MaxHeatPoint": 100,
+      "CurTime": 10,
+      "AvaliableTime": 15,
+      "StepTime": 1,
+      "VisibilityRadius": 1,
+      "CurHeatPoint": 15,
+      "Damage": 2,
+      "Accuracy": 75
+    }
+  ],
+  "Intelligence": [
+    {
+      "team_number": 1,
+      "i": 2,
+      "j": 3,
+      "Name": "Intelligence Jake",
+      "MaxHeatPoint": 100,
+      "CurTime": 10,
+      "AvaliableTime": 15,
+      "StepTime": 1,
+      "VisibilityRadius": 1,
+      "CurHeatPoint": 40,
+      "Accuracy": 75,
+      "ActiveWeapon": {
+        "Title": "Pistol",
+        "Weight": 1,
+        "Damage": 3,
+        "ShotTime": 1,
+        "ReloadTime": 3,
+        "MagazineSize": 10,
+        "MagazineCapacity": 10,
+        "RoundType": 2
+      }
+    }
+  ],
+  "Foragers": [
+    {
+      "team_number": 1,
+      "i": 3,
+      "j": 4,
+      "Name": "Forager Ben",
+      "MaxHeatPoint": 100,
+      "CurTime": 10,
+      "AvaliableTime": 15,
+      "StepTime": 1,
+      "VisibilityRadius": 1,
+      "CurHeatPoint": 40,
+      "Inventory": {
+        "Aids": [
+          {
+            "Title": "Medical Support 2",
+            "Weight": 5,
+            "UsageTime": 7,
+            "HeatPointBoost": 25
+          }
+        ],
+        "Containers": [
+          {
+            "Title": "MP-7 ammo",
+            "Weight": 5,
+            "RoundType": 3,
+            "Capacity": 50,
+            "Size": 26
+          }
+        ],
+        "Weapons": [
+          {
+            "Title": "MP-7",
+            "Weight": 3,
+            "Damage": 7,
+            "ShotTime": 2,
+            "ReloadTime": 5,
+            "MagazineSize": 10,
+            "MagazineCapacity": 10,
+            "RoundType": 1
+          }
+        ]
+      }
+    }
+
+  ]
+}

@@ -110,7 +110,7 @@ namespace UI {
         bool InventoryOpen = false;
     protected:
         double ScaleX_ = 1;
-        double ScaleY = 1;
+        double ScaleY_ = 1;
     };
 }
 

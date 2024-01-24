@@ -10,9 +10,9 @@ using namespace GameNS;
 int main() {
     sf::RenderWindow window(sf::VideoMode(900, 800), "[~~Data Deleted~~]", sf::Style::Close);
     auto ptr_gui = std::make_shared<tgui::Gui>(window);
-    GameController gameController("hahah", ptr_gui);
+    GameController gameController("../files/configs/test.json", ptr_gui);
     sf::Texture layout_texture;
-    layout_texture.loadFromFile("../models/parchmentAncient.png");
+    layout_texture.loadFromFile("../files/models/parchmentAncient.png");
     sf::Sprite layout(layout_texture);
 
     while (window.isOpen()) {

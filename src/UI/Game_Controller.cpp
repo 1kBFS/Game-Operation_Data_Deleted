@@ -5,76 +5,25 @@
 #include "Game_Controller.h"
 
 #include <utility>
-#include "../Entities/Operative.h"
-#include "../Entities/Wild_Creature.h"
-#include "../Entities/Forager.h"
-#include "../Entities/Intelligent_Creature.h"
-#include "../Items/FirstAidKit.h"
-#include "../Items/RoundContainer.h"
-
+#include "../Game/GameConfig.h"
 UI::GameController::GameController(const std::string &config_filename, std::shared_ptr<tgui::Gui> ptr_gui) : ptrGUI_(
         std::move(
                 ptr_gui)) {
-    // временное решение
-    TeamNS::Team A("Operative");
-    TeamNS::Team B("Creatures");
-    auto operative_unit = std::make_shared<EntityNS::Operative>("default");
-    operative_unit->setCurTime(10);
-    operative_unit->setAvaliableTime(10);
-    operative_unit->setVisibilityRadius(2);
-    WeaponNS::Weapon first_active_weapon("AK-47", 1, 5, 4);
-    operative_unit->setActiveWeapon(first_active_weapon);
-    InventoryNS::Inventory loaded_inventory_unit;
-    loaded_inventory_unit.push_back(std::make_unique<FirstAidKitNS::FirstAidKit>("AID", 1, 1, 5));
-    loaded_inventory_unit.push_back(std::make_unique<RoundNS::RoundContainer>("Ak-47 ammo", 1, 10, 7));
-    loaded_inventory_unit.push_back(std::make_unique<WeaponNS::Weapon>("AK-47", 1, 1, 5));
-    operative_unit->setInvetnory(std::move(loaded_inventory_unit));
-    auto intelligentCreature = std::make_shared<EntityNS::IntelligentCreature>("wild A");
-    intelligentCreature->setPos({2, 2});
-    intelligentCreature->setCurTime(10);
-    intelligentCreature->setAvaliableTime(5);
-    intelligentCreature->setVisibilityRadius(1);
-    B.push_back(std::move(operative_unit));
-    auto wild = std::make_shared<EntityNS::WildCreature>("wild B");
-    wild->setVisibilityRadius(1);
-    wild->setCurTime(4);
-    wild->setAvaliableTime(5);
-    wild->setPos({3, 3});
-    A.push_back(std::move(wild));
 
-    auto creature_unit = std::make_shared<EntityNS::Forager>("default");
-    creature_unit->setCurHeatPoint(2);
-    creature_unit->setAvaliableTime(3);
-    creature_unit->setCurTime(3);
-    creature_unit->setVisibilityRadius(1);
-    creature_unit->setPos({1, 2});
-    InventoryNS::Inventory loaded_inventory_creature;
-    loaded_inventory_creature.push_back(std::make_unique<WeaponNS::Weapon>("MP4-A1", 1, 1, 10));
-    loaded_inventory_creature.push_back(std::make_unique<FirstAidKitNS::FirstAidKit>("AID", 1, 1, 5));
-    creature_unit->setInvetnory(std::move(loaded_inventory_creature));
-    A.push_back(std::move(creature_unit));
-    A.push_back(std::move(intelligentCreature));
-    std::vector<TeamNS::Team> teams;
-    teams.push_back(std::move(A));
-    teams.push_back(std::move(B));
-    GameNS::Game temp(8, std::move(teams));
-    ScaleX_ = 10.0 / 10;
-    ScaleY = 10.0 / 10;
-    TileMap temp_map("../models/texture.png", sf::Vector2u(64, 64), 10, 10);
-    SpriteTexture_.loadFromFile("../models/units.png");
+    GameNS::GameConfig gameLoader;
+    Game_ = gameLoader.configure_game("../files/configs/test.json");
+    auto [height, width] = Game_.getLevelSize();
+    ScaleX_ = 10.0 / width;
+    ScaleY_ = 10.0 / height;
+    TileMap temp_map("../files/models/texture.png", sf::Vector2u(64, 64), width, height);
+    SpriteTexture_.loadFromFile("../files/models/units.png");
     ActiveUnitSprite_.setTexture(SpriteTexture_);
-    Game_ = std::move(temp);
     Board_ = std::move(temp_map);
-    Game_.setCellType({1, 1}, LevelNS::WALL);
-    Game_.setCellType({5, 5}, LevelNS::WALL);
-    Game_.setCellType({5, 6}, LevelNS::BARRIER);
-    Game_.setCellType({1, 0}, LevelNS::WINDOW);
-    Game_.setCellType({2, 0}, LevelNS::CONTAINER);
-    Board_.setScale(ScaleX_, ScaleY);
+    Board_.setScale(ScaleX_, ScaleY_);
     update_visible_units_sprite();
     update_sprite(ActiveUnitSprite_, Game_.getPlayerType(), Game_.getActivePlayerCoord());
     update_visible_cells_sprite();
-    NextRoundButtonTexture_.loadFromFile("../models/NextRound.JPG");
+    NextRoundButtonTexture_.loadFromFile("../files/models/NextRound.JPG");
     auto next_round_button = tgui::Button::create();
     next_round_button->setPosition(640, 640);
     next_round_button->setSize(260, 160);
@@ -136,7 +85,7 @@ void UI::GameController::update_visible_cells_sprite() {
     for (auto &cell: cells_to_show) {
         Board_.reset_type(Game_.getCellType(cell), cell);
         if (!Game_.isCellEmpty(cell))
-            Board_.add_point_of_interest(cell, {ScaleX_, ScaleY});
+            Board_.add_point_of_interest(cell, {ScaleX_, ScaleY_});
     }
 }
 
@@ -236,7 +185,7 @@ void UI::GameController::update_visible_units_sprite() {
         update_sprite(sprite, unit->getType(), unit->getPos());
         EnemySprite_.emplace_back(sprite, unit);
         // std::cout << sprite.getPosition().x << " " << sprite.getPosition().y << "\n";
-        EnemyHealthBarSprite_.push_back(HealthBar({unit->getCurHeatPoint(), unit->getMaxHeatPoint()}, {ScaleX_, ScaleY},
+        EnemyHealthBarSprite_.push_back(HealthBar({unit->getCurHeatPoint(), unit->getMaxHeatPoint()}, {ScaleX_, ScaleY_},
                                                   sprite.getPosition()));
 
     }
@@ -246,7 +195,7 @@ void UI::GameController::update_visible_units_sprite() {
         sprite.setTexture(SpriteTexture_);
         update_sprite(sprite, unit->getType(), unit->getPos());
         TeamSprite_.emplace_back(sprite);
-        TeamHealthBarSprite_.push_back(HealthBar({unit->getCurHeatPoint(), unit->getMaxHeatPoint()}, {ScaleX_, ScaleY},
+        TeamHealthBarSprite_.push_back(HealthBar({unit->getCurHeatPoint(), unit->getMaxHeatPoint()}, {ScaleX_, ScaleY_},
                                                  sprite.getPosition(), sf::Color::Green));
     }
 
@@ -256,9 +205,9 @@ void UI::GameController::update_visible_units_sprite() {
 void UI::GameController::update_sprite(sf::Sprite &sprite, const EntityNS::EntityType &newEntityType,
                                        std::pair<int, int> new_pos) {
     change_unit_texture(newEntityType, sprite);
-    sprite.setScale(ScaleX_ * 0.75, ScaleY * 0.75);
+    sprite.setScale(ScaleX_ * 0.75, ScaleY_ * 0.75);
     auto [i, j] = new_pos;
-    sprite.setPosition(j * Board_.getTileSize().x * ScaleX_, i * Board_.getTileSize().y * ScaleY);
+    sprite.setPosition(j * Board_.getTileSize().x * ScaleX_, i * Board_.getTileSize().y * ScaleY_);
 }
 
 void UI::GameController::attack_handler(float mouse_x, float mouse_y) {

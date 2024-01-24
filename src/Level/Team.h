@@ -17,7 +17,7 @@ namespace TeamNS {
          * @param title название команды.
          */
         explicit Team(std::string title);
-
+        Team() = default;
         typedef std::vector<std::shared_ptr<EntityNS::Entity>>::iterator TeamIterator;
         typedef std::vector<std::shared_ptr<EntityNS::Entity>>::const_iterator const_TeamIterator;
 
