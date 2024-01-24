@@ -11,19 +11,23 @@ UI::GameController::GameController(const std::string &config_filename, std::shar
                 ptr_gui)) {
 
     GameNS::GameConfig gameLoader;
-    Game_ = gameLoader.configure_game("../files/configs/test.json");
+    Game_ = gameLoader.configure_game(config_filename);
     auto [height, width] = Game_.getLevelSize();
     ScaleX_ = 10.0 / width;
     ScaleY_ = 10.0 / height;
     TileMap temp_map("../files/models/texture.png", sf::Vector2u(64, 64), width, height);
-    SpriteTexture_.loadFromFile("../files/models/units.png");
+    if (!SpriteTexture_.loadFromFile("../files/models/units.png")){
+        throw std::runtime_error("Unable to load texture for units.");
+    }
+    if (!NextRoundButtonTexture_.loadFromFile("../files/models/NextRound.JPG")){
+        throw std::runtime_error("Unable to load texture for next round button.");
+    }
     ActiveUnitSprite_.setTexture(SpriteTexture_);
     Board_ = std::move(temp_map);
     Board_.setScale(ScaleX_, ScaleY_);
     update_visible_units_sprite();
     update_sprite(ActiveUnitSprite_, Game_.getPlayerType(), Game_.getActivePlayerCoord());
     update_visible_cells_sprite();
-    NextRoundButtonTexture_.loadFromFile("../files/models/NextRound.JPG");
     auto next_round_button = tgui::Button::create();
     next_round_button->setPosition(640, 640);
     next_round_button->setSize(260, 160);

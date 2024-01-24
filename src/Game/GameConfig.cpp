@@ -1,7 +1,3 @@
-//
-// Created by Pavel on 25.12.2023.
-//
-
 #include "GameConfig.h"
 #include "../Entities/Operative.h"
 

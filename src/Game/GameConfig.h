@@ -1,7 +1,3 @@
-//
-// Created by Pavel on 25.12.2023.
-//
-
 #ifndef LAB3_GAMECONFIG_H
 #define LAB3_GAMECONFIG_H
 
